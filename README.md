@@ -1,6 +1,8 @@
-# paper-research-toolkit — 論文調査ツールキット（京大メンバー配布用）
+# agent-tools — コーディングエージェント用の skill / MCP 集（京大メンバー配布用）
 
-論文の**探索 → 検証 → 選別 → 保存**を支援する skill / MCP 一式。ハルシネーション（実在しない DOI・誤った書誌）を DOI 一致検証で潰し、確定した論文だけを Zotero に保存する。
+Claude Code / Codex / Antigravity 向けの skill・MCP を公開・配布するリポジトリ。今後 skill/mcp/plugin を随時追加していく。MIT ライセンス。
+
+> **現在のバンドル: 論文調査(paper research)** — 論文の**探索 → 検証 → 選別 → 保存**を支援する skill / MCP 一式。ハルシネーション（実在しない DOI・誤った書誌）を DOI 一致検証で潰し、確定した論文だけを Zotero に保存する。
 
 ## 構成
 ```
