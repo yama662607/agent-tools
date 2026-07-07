@@ -25,7 +25,7 @@ GENERATED = [
 
 MANIFEST_PATTERNS = [
     "README.md",
-    "docs/plans/install-guides-v0.1.0.md",
+    "docs/plans/*.md",
     "catalog/*.json",
     "docs/install/*.md",
     "docs/install/templates/*.tmpl",
@@ -36,6 +36,12 @@ MANIFEST_PATTERNS = [
     "scripts/check_install_docs.py",
     ".github/workflows/install-lint.yml",
     "skills/slide-creator/**/*",
+]
+
+OS_COLUMNS = [
+    ("macos", "macOS"),
+    ("linux", "Linux"),
+    ("windows", "Windows"),
 ]
 
 EXCLUDE_PATTERNS = [
@@ -135,7 +141,8 @@ installer only copies a skill directory and does not edit agent config files.
    installer.
 3. Restore the timestamped backup if the installer replaced a managed previous
    install.
-4. Remove the matching state entry under `~/.agent-tools/state/` if present.
+4. Remove the matching state entry under `~/.agent-tools/state/` or
+   `%USERPROFILE%\\.agent-tools\\state\\` if present.
 5. Restart the target agent if it cached skill discovery.
 
 ## Do Not
@@ -148,16 +155,27 @@ installer only copies a skill directory and does not edit agent config files.
 """
 
 
+def render_target_rows(skill: dict) -> str:
+    lines = [
+        "| Agent | macOS | Linux | Windows | Target notes |",
+        "|---|---|---|---|---|",
+    ]
+    for agent in skill["supported_agents"]:
+        paths = agent["target_paths"]
+        cells = [f"`{paths[key]}`" for key, _label in OS_COLUMNS]
+        lines.append(
+            f"| {agent['name']} | {cells[0]} | {cells[1]} | {cells[2]} | {agent['target_doc']} |"
+        )
+    return "\n".join(lines)
+
+
 def render_skill_install(catalog: dict, skill: dict) -> str:
     release = catalog["release"]
     repo = catalog["repository"]
     raw_base = f"{repo}/raw/refs/tags/{release}"
     template_path = ROOT / "docs/install/templates/skill-install.md.tmpl"
     template = Template(template_path.read_text(encoding="utf-8"))
-    target_rows = "\n".join(
-        f"- {a['name']}: `{a['target_path']}` ({a['target_doc']})"
-        for a in skill["supported_agents"]
-    )
+    target_rows = render_target_rows(skill)
     deps = "\n".join(
         f"- `{d['name']}`: {d['notes']}"
         for d in skill["dependencies"]
@@ -194,6 +212,12 @@ Supported target agents:
 
 {target_rows}
 
+The catalog key for these paths is `supported_agents.target_paths`. Detect
+whether you are on macOS, Linux, native Windows, or WSL before choosing a path.
+Do not treat a WSL Linux path and a Windows native path as interchangeable.
+On Windows, identify whether the agent shell is PowerShell, Command Prompt, or
+Git Bash before writing commands or paths.
+
 Ask the user which single target agent should receive the skill. If they choose
 more than one, present one dry-run plan per target and ask for consent for each.
 
@@ -226,10 +250,12 @@ Wait for the user to explicitly say `proceed`.
 
 ## Fetch And Verify
 
-After `proceed`, fetch the fixed `{release}` release only. Use a cache path like:
+After `proceed`, fetch the fixed `{release}` release only. Use an
+OS-appropriate cache path like:
 
 ```text
 ~/.agent-tools/cache/agent-tools/{release}/<commit>/
+%USERPROFILE%\\.agent-tools\\cache\\agent-tools\\{release}\\<commit>
 ```
 
 Verify `install/MANIFEST.json` before installing. If the manifest check fails,
@@ -256,6 +282,7 @@ without separate user consent.
 
 Report:
 
+- detected OS and shell
 - installed
 - skipped
 - modified files
@@ -271,6 +298,14 @@ def excluded(path: str) -> bool:
     return any(fnmatch.fnmatch(path, pattern) for pattern in EXCLUDE_PATTERNS)
 
 
+def manifest_bytes(data: bytes) -> bytes:
+    try:
+        data.decode("utf-8")
+    except UnicodeDecodeError:
+        return data
+    return data.replace(b"\r\n", b"\n")
+
+
 def manifest_paths(generated: dict[str, str]) -> list[str]:
     paths: set[str] = set()
     for pattern in MANIFEST_PATTERNS:
@@ -283,8 +318,10 @@ def manifest_paths(generated: dict[str, str]) -> list[str]:
 
 def file_bytes(path: str, generated: dict[str, str]) -> bytes:
     if path in generated:
-        return generated[path].encode("utf-8")
-    return (ROOT / path).read_bytes()
+        data = generated[path].encode("utf-8")
+    else:
+        data = (ROOT / path).read_bytes()
+    return manifest_bytes(data)
 
 
 def render_manifest(catalog: dict, generated: dict[str, str]) -> str:
