@@ -2,8 +2,8 @@
   "files": [
     {
       "path": ".github/workflows/install-lint.yml",
-      "sha256": "dd54efe2a201f2338bdde7e1cef00c9aa64e4a45f061a847657883d0d00f1b3f",
-      "size": 574
+      "sha256": "4d9820a384b8284b54284b09ed5e9870bcd217686ce99357cd4df900c9b0331b",
+      "size": 686
     },
     {
       "path": "README.md",
@@ -12,43 +12,43 @@
     },
     {
       "path": "catalog/bundles.json",
-      "sha256": "f80abf33b2e63dc742ce5df5957ad2af9e217ab1a9e53a41590d725dce7b28af",
+      "sha256": "e73699b872334435c6081ff73d50d1629038955536ccb26609ba7cb26d5984b7",
       "size": 127
     },
     {
       "path": "catalog/mcp.json",
-      "sha256": "a5308e47ffa74f98c611c2f44f062c0afcf22952ce42f55a21ca2384bf18b046",
+      "sha256": "d2f45e3dcd27b977763fd244ed54ec015017a32fe0c3c61119620eed253c8af2",
       "size": 131
     },
     {
       "path": "catalog/skills.json",
-      "sha256": "490ea40045762e6b1a35c78c161f23cc9c3b15e26910333e8269de474934f0f4",
-      "size": 3390
+      "sha256": "e37a5ffa050bc0e5b8b94c0d28844e019f5ff6a67defa64a4b1f6adba761f569",
+      "size": 4135
     },
     {
       "path": "docs/install/AGENT_INSTALL_POLICY.md",
-      "sha256": "7930855f68d9c4ca555c5834139c6b81066e839c53eed7258e98c09d13f4619b",
-      "size": 2308
+      "sha256": "642f243605ad10b8f05680cded2ef3679f431f9d9c371d00f67466ed33b8f869",
+      "size": 3963
     },
     {
       "path": "docs/install/TARGET_ANTIGRAVITY.md",
-      "sha256": "d479f6d90b684ac054a6500904bb621db1a5c2d81842a10614677f0bb1fae7f2",
-      "size": 508
+      "sha256": "b48c991e834f43c325cc15b238c94621c6c0ade98a02cc6cc5e91c70a7a2a668",
+      "size": 876
     },
     {
       "path": "docs/install/TARGET_CLAUDE_CODE.md",
-      "sha256": "08323bb7c7951a650acaff1eacabde259832f0bd2a1348641afff1067cf0cff0",
-      "size": 467
+      "sha256": "02b009c224c2c387b7eca2d3f5427043d3769266e1ce0451dfa90af191577392",
+      "size": 803
     },
     {
       "path": "docs/install/TARGET_CODEX.md",
-      "sha256": "1800e4475c21cc379de19d788b1e43d45bff01c0eb12c6fe0946c71792147459",
-      "size": 454
+      "sha256": "ceee433bbf6399c246b9276d223e2dfd8c78922c66a6d4a7e7c5f6ba644b6381",
+      "size": 776
     },
     {
       "path": "docs/install/TROUBLESHOOTING.md",
-      "sha256": "2d503b7bc8afdc1a982f00de5d237d357ef956a3476687c67302aec4e5b7a900",
-      "size": 933
+      "sha256": "10ace5c17c3b20a954e94c38dee94b10e0cbdd94ab355b3ba884752204ed43ea",
+      "size": 2307
     },
     {
       "path": "docs/install/templates/bundle-install.md.tmpl",
@@ -71,29 +71,34 @@
       "size": 3841
     },
     {
+      "path": "docs/plans/install-guides-v0.1.1-os-platforms.md",
+      "sha256": "76f2937c1604d8e1d6ffe75a530e36e88ea996ad121fcaa10cf5ff94121499f2",
+      "size": 2708
+    },
+    {
       "path": "install/README.md",
-      "sha256": "c5e0a4e902203959429f079113715bd8127ca230a5d07e91d85abcd40b72faa6",
+      "sha256": "58871611e1e0c5945472251c1428ca7537b4fb6c72c01fb4203e5e19e67c5741",
       "size": 1279
     },
     {
       "path": "install/ROLLBACK.md",
-      "sha256": "cc0ebedfa488db8fabfa02ee3b2441de539396c8bf555a20a4cc39ddae3f9fc9",
-      "size": 873
+      "sha256": "4cf2d41c51e51909c1f99cba60c2160736a31cb9519ddfa6532225b3a0409935",
+      "size": 915
     },
     {
       "path": "install/skills/slide-creator.md",
-      "sha256": "63ed9038e9d98e97135d3e173ecb72981dd8ded610601155ec78c4970711fe39",
-      "size": 3595
+      "sha256": "5b818a9d9af7b72eabfdd905d69b8ac52afcf40f57a488bfcc83e90d54070137",
+      "size": 4513
     },
     {
       "path": "scripts/check_install_docs.py",
-      "sha256": "ad3aa3c99289629eb7d143f0b828ed93fde4a225b7ac291988490d62548640e5",
-      "size": 5667
+      "sha256": "8dd27a33109defc01b93ec045539745ec96f654d8853f4a82ca48cd4a276f5bd",
+      "size": 7007
     },
     {
       "path": "scripts/generate_install_docs.py",
-      "sha256": "1db7ddb7156b20ce1d6dd3738b6c0319622d4bd4d285cb5febce1558d038afa8",
-      "size": 10076
+      "sha256": "6a9e2cf75c112b56f88e348cb2bd8b84acbfb498ac2f0f7b7009d2911f2f4db7",
+      "size": 11243
     },
     {
       "path": "skills/slide-creator/SKILL.md",
@@ -231,7 +236,7 @@
       "size": 16226
     }
   ],
-  "release": "v0.1.0",
+  "release": "v0.1.1",
   "repository": "https://github.com/yama662607/agent-tools",
   "schema_version": 1,
   "self_hash_excluded": "install/MANIFEST.json"

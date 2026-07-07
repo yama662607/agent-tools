@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "release": "v0.1.0",
+  "release": "v0.1.1",
   "repository": "https://github.com/yama662607/agent-tools",
   "default_branch": "main",
   "skills": [
@@ -17,19 +17,31 @@
         {
           "id": "claude-code",
           "name": "Claude Code",
-          "target_path": "~/.claude/skills/slide-creator",
+          "target_paths": {
+            "macos": "~/.claude/skills/slide-creator",
+            "linux": "~/.claude/skills/slide-creator",
+            "windows": "%USERPROFILE%\\.claude\\skills\\slide-creator"
+          },
           "target_doc": "docs/install/TARGET_CLAUDE_CODE.md"
         },
         {
           "id": "codex",
           "name": "Codex",
-          "target_path": "~/.codex/skills/slide-creator",
+          "target_paths": {
+            "macos": "~/.codex/skills/slide-creator",
+            "linux": "~/.codex/skills/slide-creator",
+            "windows": "%USERPROFILE%\\.codex\\skills\\slide-creator"
+          },
           "target_doc": "docs/install/TARGET_CODEX.md"
         },
         {
           "id": "antigravity",
           "name": "Antigravity",
-          "target_path": "~/.gemini/antigravity-cli/skills/slide-creator",
+          "target_paths": {
+            "macos": "~/.gemini/antigravity-cli/skills/slide-creator",
+            "linux": "~/.gemini/antigravity-cli/skills/slide-creator",
+            "windows": "%USERPROFILE%\\.gemini\\antigravity-cli\\skills\\slide-creator"
+          },
           "target_doc": "docs/install/TARGET_ANTIGRAVITY.md"
         }
       ],
@@ -56,7 +68,7 @@
           "name": "Microsoft PowerPoint for Mac",
           "required_for_install": false,
           "required_for_runtime": false,
-          "notes": "Needed only for high-fidelity visual QA PDF export."
+          "notes": "Needed only for macOS high-fidelity visual QA PDF export."
         }
       ],
       "network_access": [
@@ -66,11 +78,13 @@
         }
       ],
       "writes": [
-        "~/.agent-tools/cache/agent-tools/v0.1.0/<commit>/",
-        "~/.claude/skills/slide-creator or ~/.codex/skills/slide-creator or ~/.gemini/antigravity-cli/skills/slide-creator"
+        "macOS/Linux cache: ~/.agent-tools/cache/agent-tools/v0.1.1/<commit>/",
+        "Windows cache: %USERPROFILE%\\.agent-tools\\cache\\agent-tools\\v0.1.1\\<commit>",
+        "selected target agent skill directory from supported_agents.target_paths"
       ],
       "manual_steps": [
         "Choose exactly one target agent before making changes.",
+        "Detect whether the environment is macOS, Linux, native Windows, or WSL before choosing paths.",
         "Review the dry-run plan and explicitly say proceed.",
         "Approve optional runtime setup such as bun install only when a later task needs it."
       ],
@@ -82,7 +96,7 @@
       "rollback": [
         "Remove the installed target skill directory if it was created by this installer.",
         "Restore any timestamped backup if a managed target was replaced.",
-        "Remove the corresponding install-state entry under ~/.agent-tools/state/ if present."
+        "Remove the corresponding install-state entry under `~/.agent-tools/state/` or `%USERPROFILE%\\.agent-tools\\state\\` if present."
       ]
     }
   ]

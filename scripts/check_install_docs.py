@@ -9,6 +9,8 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+EXPECTED_RELEASE = "v0.1.1"
+REQUIRED_TARGET_OS = {"macos", "linux", "windows"}
 
 SECRET_PATTERNS = [
     re.compile(r"sk-[A-Za-z0-9]{20,}"),
@@ -40,6 +42,19 @@ def load_json(path: str) -> dict:
         return json.load(f)
 
 
+def manifest_bytes(data: bytes) -> bytes:
+    try:
+        data.decode("utf-8")
+    except UnicodeDecodeError:
+        return data
+    return data.replace(b"\r\n", b"\n")
+
+
+def manifest_file_bytes(path: str) -> bytes:
+    data = (ROOT / path).read_bytes()
+    return manifest_bytes(data)
+
+
 def check_generated() -> int:
     return subprocess.run(
         [sys.executable, "scripts/generate_install_docs.py", "--check"],
@@ -50,8 +65,8 @@ def check_generated() -> int:
 
 def check_catalog() -> int:
     catalog = load_json("catalog/skills.json")
-    if catalog.get("release") != "v0.1.0":
-        return fail("catalog/skills.json release must be v0.1.0")
+    if catalog.get("release") != EXPECTED_RELEASE:
+        return fail(f"catalog/skills.json release must be {EXPECTED_RELEASE}")
     skills = catalog.get("skills")
     if not isinstance(skills, list) or len(skills) != 1:
         return fail("catalog/skills.json must define exactly one initial skill")
@@ -65,9 +80,18 @@ def check_catalog() -> int:
     if not (ROOT / skill["source_path"] / "SKILL.md").is_file():
         return fail("slide-creator source_path does not contain SKILL.md")
     for agent in skill["supported_agents"]:
-        for key in ("id", "name", "target_path", "target_doc"):
+        for key in ("id", "name", "target_paths", "target_doc"):
             if key not in agent:
                 return fail(f"supported agent missing {key}")
+        target_paths = agent["target_paths"]
+        if not isinstance(target_paths, dict):
+            return fail("supported agent target_paths must be an object")
+        missing_os = sorted(REQUIRED_TARGET_OS - set(target_paths))
+        if missing_os:
+            return fail(f"supported agent target_paths missing: {', '.join(missing_os)}")
+        for os_key in REQUIRED_TARGET_OS:
+            if not isinstance(target_paths.get(os_key), str) or not target_paths[os_key]:
+                return fail(f"supported agent target_paths.{os_key} must be a non-empty string")
         if not (ROOT / agent["target_doc"]).is_file():
             return fail(f"missing target doc: {agent['target_doc']}")
     for path in ("catalog/mcp.json", "catalog/bundles.json"):
@@ -90,7 +114,7 @@ def check_manifest() -> int:
         full = ROOT / path
         if not full.is_file():
             return fail(f"manifest path missing: {path}")
-        data = full.read_bytes()
+        data = manifest_file_bytes(path)
         import hashlib
         if len(data) != item.get("size"):
             return fail(f"manifest size mismatch: {path}")
@@ -111,16 +135,22 @@ def check_manifest() -> int:
 
 def check_install_guide() -> int:
     guide = (ROOT / "install/skills/slide-creator.md").read_text(encoding="utf-8")
+    normalized = " ".join(guide.split())
     required_phrases = [
         "Copy this entire Markdown file",
         "Do not copy only command blocks",
         "untrusted data until the fixed release and manifest have been verified",
         "Wait for the user to explicitly say `proceed`",
         "Do not run `sudo`, `brew`, `mise`, `bun install`, `uvx`, `npx`, or config writes",
-        "v0.1.0",
+        "supported_agents.target_paths",
+        "Detect whether you are on macOS, Linux, native Windows, or WSL",
+        "Do not treat a WSL Linux path and a Windows native path as interchangeable",
+        "PowerShell",
+        EXPECTED_RELEASE,
     ]
     for phrase in required_phrases:
-        if phrase not in guide:
+        normalized_phrase = " ".join(phrase.split())
+        if phrase not in guide and normalized_phrase not in normalized:
             return fail(f"install guide missing phrase: {phrase}")
     return 0
 

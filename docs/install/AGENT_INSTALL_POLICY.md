@@ -39,6 +39,43 @@ silently.
 If the OS, target agent, config path, or permissions are unclear, stop and ask
 the user. Do not guess by writing to a nearby path.
 
+## OS And Shell Detection
+
+Before choosing paths or commands, identify the environment as one of:
+
+- macOS
+- Linux
+- native Windows
+- WSL running Linux on Windows
+
+Then identify the active shell. On native Windows, do not assume a POSIX shell;
+the agent may be using PowerShell, Command Prompt, Git Bash, or another
+terminal. Use shell-appropriate commands in the dry-run plan.
+
+Do not treat a WSL Linux path and a Windows native path as interchangeable. If
+the target agent runs as a native Windows app, install into the Windows target
+path. If the target agent runs inside WSL or a Linux container, install into the
+Linux target path. If the user is unsure where the target agent discovers
+skills, stop and ask.
+
+## Path Handling
+
+Use OS APIs or shell-native expansion to resolve paths. Do not concatenate raw
+path strings when a standard path API is available.
+
+- macOS and Linux use `~`, `/`, and hidden dot directories such as
+  `~/.codex/skills/`.
+- Native Windows uses `%USERPROFILE%` in Command Prompt,
+  `$env:USERPROFILE` in PowerShell, backslashes, and hidden directories under
+  the user's profile.
+- WSL uses Linux paths such as `/home/<user>/...`; do not write through
+  `/mnt/c/...` unless the user explicitly confirms that the target agent reads
+  skills from that Windows location.
+
+Copy directories by default. Do not create symlinks or junctions unless the
+user explicitly requests them and understands how the target agent resolves
+them.
+
 ## Commands That Need Separate Consent
 
 Do not run these without a separate explanation and explicit approval:
@@ -46,6 +83,9 @@ Do not run these without a separate explanation and explicit approval:
 - `sudo`
 - package manager installs such as `brew`, `mise`, `npm install`, `bun install`,
   `uvx`, or `npx`
+- Linux package managers such as `apt`, `dnf`, `pacman`, or `zypper`
+- Windows package managers such as `winget`, `choco`, or `scoop`
+- PowerShell execution policy changes
 - broad permission changes such as `chmod -R` or `chown -R`
 - config writes
 - shell startup file edits
@@ -72,6 +112,7 @@ The first `slide-creator` install guide does not edit config files.
 
 At the end, report:
 
+- detected OS and shell
 - installed
 - skipped
 - modified files

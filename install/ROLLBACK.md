@@ -1,7 +1,7 @@
 # Rollback agent-tools installs
 
 This document defines the rollback baseline for installs generated from
-`agent-tools` `v0.1.0`.
+`agent-tools` `v0.1.1`.
 
 For `slide-creator`, rollback is intentionally simple because the first
 installer only copies a skill directory and does not edit agent config files.
@@ -13,7 +13,8 @@ installer only copies a skill directory and does not edit agent config files.
    installer.
 3. Restore the timestamped backup if the installer replaced a managed previous
    install.
-4. Remove the matching state entry under `~/.agent-tools/state/` if present.
+4. Remove the matching state entry under `~/.agent-tools/state/` or
+   `%USERPROFILE%\.agent-tools\state\` if present.
 5. Restart the target agent if it cached skill discovery.
 
 ## Do Not
