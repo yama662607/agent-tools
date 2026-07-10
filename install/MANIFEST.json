@@ -172,8 +172,8 @@
     },
     {
       "path": "skills/slide-creator/references/roundtrip.md",
-      "sha256": "3fdb784be7089115df115509c853d29783316bda3db06d6bf4ebc72c0415916c",
-      "size": 10712
+      "sha256": "791d7a22048275c36365552dcf379a3f17db98398dc2944c7e3455842152cdc3",
+      "size": 10716
     },
     {
       "path": "skills/slide-creator/references/template-following.md",
@@ -262,8 +262,8 @@
     },
     {
       "path": "skills/slide-creator/scripts/safe_rebuild.py",
-      "sha256": "10b26ff858ec841e984145995f913a2f7603874476f6c1213809b808f87d45a2",
-      "size": 7180
+      "sha256": "7969e38e757a717fee4f7ccd8c50497e41185897985f71dbda7b5c98ac33b4fc",
+      "size": 7472
     },
     {
       "path": "skills/slide-creator/scripts/sync_from_pptx.py",

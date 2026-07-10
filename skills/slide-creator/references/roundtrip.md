@@ -205,7 +205,7 @@ What it does, in order:
    and its owner lock file (`~$<basename>`) sits next to the deck, the deck is
    likely open — exit 2. Have the user save and close it, then re-run.
 2. **Timestamped backup.** Copies the deck to
-   `<backup-dir>/<stem>_backup_<YYYYMMDD-HHMMSS-microseconds>.pptx`
+   `<backup-dir>/<stem>_backup_<YYYYMMDD-HHMMSS-microseconds>[-N].pptx`
    (default: the deck's own
    directory) so the pre-rebuild state is always recoverable.
 3. **Untracked-edit capture.** With the required `--reference` (a deck rebuilt

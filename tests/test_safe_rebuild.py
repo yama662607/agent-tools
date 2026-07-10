@@ -1,4 +1,5 @@
 import importlib.util
+import datetime
 import subprocess
 import tempfile
 import unittest
@@ -50,12 +51,18 @@ class PowerPointProcessTests(unittest.TestCase):
 
 class BackupTests(unittest.TestCase):
     def test_backup_never_reuses_an_existing_name(self):
+        class FixedDatetime(datetime.datetime):
+            @classmethod
+            def now(cls, tz=None):
+                return cls(2026, 7, 10, 14, 25, 8, 740506, tzinfo=tz)
+
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             deck = root / "deck.pptx"
             deck.write_bytes(b"deck")
-            first = safe_rebuild.make_backup(deck, root / "backups")
-            second = safe_rebuild.make_backup(deck, root / "backups")
+            with mock.patch.object(safe_rebuild.datetime, "datetime", FixedDatetime):
+                first = safe_rebuild.make_backup(deck, root / "backups")
+                second = safe_rebuild.make_backup(deck, root / "backups")
             self.assertNotEqual(first, second)
             self.assertEqual(first.read_bytes(), b"deck")
             self.assertEqual(second.read_bytes(), b"deck")

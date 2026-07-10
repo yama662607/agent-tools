@@ -14,7 +14,7 @@ Checks, in order:
    the deck is likely open -> exit 2. Rebuilding over an open deck silently
    reverts unsaved manual edits (including swapped images).
 2. Timestamped backup: copies the deck to
-   ``<backup-dir>/<stem>_backup_<YYYYMMDD-HHMMSS-microseconds>.pptx``
+   ``<backup-dir>/<stem>_backup_<YYYYMMDD-HHMMSS-microseconds>[-N].pptx``
    (default: the deck's own
    directory) so the pre-rebuild state is always recoverable.
 3. Untracked manual edits: with --reference, runs the sibling
@@ -82,9 +82,18 @@ def check_powerpoint_open(deck: Path) -> bool:
 def make_backup(deck: Path, backup_dir: Path) -> Path:
     backup_dir.mkdir(parents=True, exist_ok=True)
     stamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S-%f")
-    backup = backup_dir / f"{deck.stem}_backup_{stamp}.pptx"
-    with deck.open("rb") as src, backup.open("xb") as dst:
-        shutil.copyfileobj(src, dst)
+    for sequence in range(1000):
+        suffix = "" if sequence == 0 else f"-{sequence}"
+        backup = backup_dir / f"{deck.stem}_backup_{stamp}{suffix}.pptx"
+        try:
+            dst = backup.open("xb")
+        except FileExistsError:
+            continue
+        with deck.open("rb") as src, dst:
+            shutil.copyfileobj(src, dst)
+        break
+    else:
+        raise FileExistsError("could not allocate a unique backup name")
     shutil.copystat(deck, backup)
     return backup
 
