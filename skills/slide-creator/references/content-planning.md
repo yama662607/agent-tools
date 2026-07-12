@@ -81,6 +81,12 @@ speaker notes, disclose fitted, calibrated, assumed, and illustrative values
 when their status affects interpretation. Never present a calibrated value as
 a first-principles result.
 
+Do not treat a source path or citation as verified evidence merely because it
+has been written into the plan. Inspect the cited artifact and confirm that it
+contains the claimed value, condition, or observation before marking
+provenance complete. If the source cannot be inspected, label the item
+\`unverified\` and ask the user to confirm or replace it.
+
 ## Scientific-model contract
 
 For any live academic deck where a simulation or mathematical model carries a
@@ -93,6 +99,9 @@ appendix or cited source rather than silently omitting it. The full contract is:
 - equation of motion or update rule
 - interaction, force, adhesion, alignment, and reaction rules that matter
 - state variables and state transitions
+- reverse transitions, decay, persistence, and stochastic switching when they
+  affect the claim
+- conditional update branches and the condition that selects each branch
 - initial and boundary conditions
 - observables and how they are computed
 - parameter units and provenance
