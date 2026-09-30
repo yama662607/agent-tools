@@ -33,8 +33,14 @@ for para in shape.text_frame.paragraphs:
             run.text = run.text.replace("PLACEHOLDER", "actual value")
 ```
 
-Longer replacement text may overflow the box — visual QA catches this; be
-ready to shrink font size or shorten the text.
+Longer replacement text may overflow the box — visual QA catches this.
+Shorten the text, widen the region or split the content while keeping body
+text at least 16pt (normally 18–24pt).
+
+For a requested Japanese font change, use `scripts/text_style.py`'s
+`set_japanese_font(run, font_face)` to set Latin, East Asian and complex-script
+typefaces together. Read [text-readability.md](text-readability.md) for import
+and usage instructions and the explicit exceptions for small auxiliary text.
 
 **Preserve native list formatting.** Bullets and numbered lists must remain
 PowerPoint-native and editable. Do not replace a list with literal "•", "-",

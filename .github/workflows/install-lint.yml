@@ -17,6 +17,9 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
       - uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
       - name: Check generated install docs
         run: python scripts/generate_install_docs.py --check
@@ -28,3 +31,7 @@ jobs:
         run: python -m unittest discover -s tests -p "test_*.py"
       - name: Run slide-creator fixture smoke tests
         run: uv run tests/runtime_smoke.py
+      - name: Check Japanese text options and title alignment
+        run: node --test tests/text_options.test.mjs
+      - name: Check slide text readability regressions
+        run: uv run tests/readability_smoke.py

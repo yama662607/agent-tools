@@ -67,14 +67,24 @@ after replacing the topic words, it is too generic — revise it before coding.
 | Review / QA checklists & prohibitions | read [references/qa-checklist.md](references/qa-checklist.md) |
 | High-fidelity visual QA artifact | `uv run scripts/powerpoint_pdf_qa.py deck.pptx --out qa/powerpoint-pdf --pdf-only` |
 | Approximate render of a few slides (PowerPoint busy/unavailable) | `uv run scripts/render_slides.py deck.pptx --slides 2,7 --out qa/approx` |
-| Final validation | `uv run scripts/verify_deck.py deck.pptx` |
+| Japanese text fonts, single-line title reserve, font-size exceptions | read [references/text-readability.md](references/text-readability.md); `scripts/text_options.mjs` / `scripts/text_style.py` |
+| Final validation | `uv run scripts/verify_deck.py deck.pptx [--font-size-exceptions text-exceptions.json]` |
 
-All Python scripts are self-contained (`uv run` resolves their dependencies
-inline). One-time setup for the equation converter: `cd scripts/omml && bun install`.
+Python command-line tools declare their dependencies inline (`uv run` resolves
+them); helper modules use the calling tool's environment. One-time setup for
+the equation converter: `cd scripts/omml && bun install`.
 
 Lists are always native PowerPoint lists. Never fake bullets or numbering
 with typed markers ("•", "1.", circled numbers) or detached marker shapes;
 use editable paragraph bullet/numbering properties instead.
+
+The static text gate rejects native slide body/table text below 16pt,
+including supported inherited sizes and saved autofit scaling. Deliberately
+small page numbers, source notes and auxiliary labels need an exact shape
+exception with a role and reason. Read
+[references/text-readability.md](references/text-readability.md); use the
+same exception file at PACKAGE and final VERIFY. A static pass does not
+replace font availability or text-fit checks in PowerPoint.
 
 ## The Build Order (non-negotiable)
 
@@ -85,12 +95,12 @@ engines can distort or corrupt some features:
 
 ```
 1. BUILD      deck structure + text + figures   (pptxgenjs or python-pptx)
-2. PACKAGE    normalize + structural gate        (normalize_package.py, then verify_deck.py)
+2. PACKAGE    normalize + structure/text gate     (normalize_package.py, then verify_deck.py)
 3. EQUATIONS  inject LaTeX-derived native math   (scripts/add_equation.py)
 4. VIDEO      normalize + embed videos           (scripts/add_video.py)
 5. VISUAL QA  PowerPoint PDF → inspect/review     (read-only! see below)
 6. ANIMATE    transitions + shape animations     (scripts/animate.py)
-7. VERIFY     structural checks, no rendering    (scripts/verify_deck.py)
+7. VERIFY     structure/text checks, no rendering (scripts/verify_deck.py)
 ```
 
 Rules that follow from hard-won community evidence:
@@ -232,8 +242,10 @@ slide quality.
 
 Font caveat: even with PowerPoint export, text can drift on another machine if
 the presentation uses fonts not installed there. Hiragino/Arial are safe on
-this Mac; equations use Cambria Math. For Windows-bound decks add ~10% width
-slack.
+this Mac; equations use Cambria Math. For Windows-bound decks, choose fonts
+available there and inspect the target rendering. The single-line title
+reserve in [references/text-readability.md](references/text-readability.md)
+is a starting allowance, not a universal percentage or fit guarantee.
 
 ## Final Verification (step 7)
 

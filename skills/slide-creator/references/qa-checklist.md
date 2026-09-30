@@ -144,7 +144,7 @@ always visible to the audience.
 |---|---|---|
 | Body font | ≥ 18 pt (prefer 20–24) | Harvard Chan, ACU, WCAG-derived |
 | Title font | ≥ 24 pt (prefer 26–28 here) | Harvard Chan, ACU |
-| Conditions/captions | 13–14 pt if needed for interpretation; 11–12 pt only for pure source notes | projection practice |
+| Conditions/captions | ≥ 16 pt when needed for interpretation; 11–14 pt only for explicitly exempted source/auxiliary text | skill's static floor + visual QA |
 | Contrast | ≥ 4.5:1 body, ≥ 3:1 large text | WCAG 2.x AA |
 | Bullets per slide | ≤ 4 | Harvard Chan, ACU, TEDx |
 | Colors | ≤ 3–4 beyond black/white | McKinsey convention, Ethos3 |
@@ -155,6 +155,14 @@ always visible to the audience.
 
 These are floors for delivered decks; a deliberate design choice may exceed
 them, but must be a choice, not an accident.
+
+`verify_deck.py` enforces a 16pt lower floor for non-empty native slide text
+and tables. This catches obvious small-text failures; the body recommendation
+above remains ≥18pt. Small auxiliary text needs a specific slide/shape
+exception, permitted role and reason — see
+[text-readability.md](text-readability.md). Chart-owned labels and text inside
+images/SmartArt still need visual review; a static pass is not a readability
+or text-fit certification.
 
 ## Prohibitions
 
@@ -250,7 +258,9 @@ objects — treat them as geometry systems, not decoration):
 
 1. `uv run scripts/powerpoint_pdf_qa.py deck.pptx --out qa/powerpoint-pdf --pdf-only` —
    PowerPoint PDF artifact exists and was inspected.
-2. `uv run scripts/verify_deck.py deck.pptx` — structural pass required.
+2. `uv run scripts/verify_deck.py deck.pptx [--font-size-exceptions text-exceptions.json]` —
+   structural and native-text font-size pass required. Supply the same
+   explicit exceptions used after BUILD.
 3. **Title read-through**: read only the titles in order — they must tell
    the complete story on their own (horizontal flow).
 4. **Glance test**: each slide's point graspable in ~3 seconds at thumbnail

@@ -23,6 +23,8 @@ mkdir deck-build && cd deck-build && bun add pptxgenjs
 ```javascript
 // build_deck.mjs
 import pptxgen from "pptxgenjs";
+// Copy scripts/text_options.mjs from this skill beside the build script.
+import { japaneseTextOptions, singleLineTitleOptions } from "./text_options.mjs";
 const pres = new pptxgen();
 pres.layout = "LAYOUT_WIDE";          // 13.333 x 7.5 inches — all coords in inches
 // If you want the slide-creator 10 x 5.625 inch coordinate system instead:
@@ -34,16 +36,20 @@ pres.layout = "LAYOUT_WIDE";          // 13.333 x 7.5 inches — all coords in i
 // faint on a projector.
 const JP = "Hiragino Kaku Gothic ProN";
 const slide = pres.addSlide();
-slide.addText("秩序化ダイナミクスは密度に依存する", {
-  x: 0.5, y: 0.35, w: 9, h: 0.7, fontSize: 26, bold: true,
+slide.addText("秩序化ダイナミクスは密度に依存する", singleLineTitleOptions({
+  x: 0.5, y: 0.35, w: 12, h: 0.7, fontSize: 26, bold: true,
   fontFace: JP, color: "1A1A1A",
-});
+}, 13.333333));
 await pres.writeFile({ fileName: "../deck.pptx" });
 ```
 
 Run: `bun build_deck.mjs`. Geometry: PowerPoint widescreen is 16:9; choose
 one coordinate system and keep it consistent. `LAYOUT_WIDE` is **13.333 x
 7.5 in**. The custom `SC_16X9` example above is **10 x 5.625 in**.
+
+For explicit East Asian fonts, single-line title reserve and 16pt verification
+exceptions, read [text-readability.md](text-readability.md). Reserve width once;
+imported round-trip coordinates already include the final width.
 
 ## The gotchas that actually bite
 
@@ -106,12 +112,12 @@ data change:
 
 ```javascript
 const M = 0.5;                       // margin
-const W = 10 - 2 * M;                // content width
+const W = 10 - 2 * M;                // final content width (SC_16X9)
 function claimFigureSlide(pres, { claim, figPath, caption }) {
   const s = pres.addSlide();
-  s.addText(claim, { x: M, y: 0.3, w: W, h: 0.7, fontSize: 26, bold: true });
+  s.addText(claim, singleLineTitleOptions({ x: M, y: 0.3, w: W - 0.125, h: 0.7, fontSize: 26 }, 10));
   s.addImage({ path: figPath, x: 1.2, y: 1.15, w: 7.6, h: 3.6, sizing: { type: "contain", w: 7.6, h: 3.6 } });
-  s.addText(caption, { x: 1.2, y: 4.85, w: 7.6, h: 0.4, fontSize: 12, color: "666666", italic: true });
+  s.addText(caption, japaneseTextOptions({ x: 1.2, y: 4.85, w: 7.6, h: 0.4, fontSize: 18, color: "666666", italic: true }));
   return s;
 }
 ```

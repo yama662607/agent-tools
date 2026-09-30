@@ -9,7 +9,8 @@ video/animation bugs).
 
 Checks: ZIP integrity, package/content-type consistency, python-pptx re-open,
 relationship targets and references, media health via ffprobe, duplicate shape
-ids, animation target ids, placeholder debris in text, fake list markers.
+ids, animation target ids, placeholder debris in text, fake list markers,
+native slide text/table font sizes (16pt floor, including inherited sizes).
 --text dumps per-slide text instead.
 """
 import argparse
@@ -92,6 +93,8 @@ def main() -> None:
     p.add_argument("pptx")
     p.add_argument("--text", action="store_true",
                    help="dump per-slide text and exit")
+    p.add_argument("--font-size-exceptions", type=Path,
+                   help="JSON allowlist of exact slide/shape names, roles and reasons for small auxiliary text")
     args = p.parse_args()
     path = Path(args.pptx)
     problems: list[str] = []
@@ -365,6 +368,22 @@ def main() -> None:
              f"numbering instead: {fake_list_markers}", problems)
     else:
         ok("no manual list markers masquerading as bullets/numbering")
+
+    # --- text readability (static; no package changes or rendering) ---------
+    from text_readability import check_text_sizes, load_exceptions
+    exceptions = []
+    if args.font_size_exceptions:
+        try:
+            exceptions = load_exceptions(args.font_size_exceptions)
+        except (OSError, ValueError, TypeError) as error:
+            fail(f"font-size exceptions: {error}", problems)
+    font_issues, exempted = check_text_sizes(prs, exceptions)
+    for message in font_issues:
+        fail(message, problems)
+    for message in exempted:
+        print(f"  EXEMPT {message}")
+    if not font_issues:
+        ok("native slide text/tables meet 16pt floor or have explicit exceptions")
 
     # --- media health -------------------------------------------------------
     media = [n for n in names if n.startswith("ppt/media/")
