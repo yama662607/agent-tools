@@ -5,10 +5,22 @@ keep it next to the output — regeneration must always be one command.
 
 ## Before coding
 
-Do not open with `addText` calls. First write the quality plan from
-design-profiles.md as comments near the top of the build script: profile,
-claim spine, proof objects, visual motif, palette roles, and slide-family
-rhythm. Then define layout constants and helpers that implement that plan.
+First complete the content plan in [content-planning.md](content-planning.md)
+and render the HTML storyboard in [html-mock.md](html-mock.md). Inspect the
+flow and evidence, then make adopted changes in the shared source. For a
+mock-only request, stop before writing PPTX code.
+
+Write the visual quality plan from design-profiles.md in the build notes:
+profile, visual motif, palette roles, and slide-family rhythm. Let the build
+script read the same titles, text, figures, tables, and LaTeX used by the
+mock; do not maintain separate handwritten copies. Then define the native
+PPTX layout constants and helpers that implement the reviewed content.
+
+**Layout Variety & Monotony Prevention**:
+- Never use the same layout silhouette on adjacent slides unless they are an intentional comparison pair.
+- Cap generic two-column text slides at **maximum 1 slide per deck** (Mck-ppt experience: two_column_text Overuse).
+- Vary layout families across content slides: figure+takeaway, structured table, equation derivation, metric callouts, timeline.
+- verify_deck.py mechanically rejects decks with 3+ consecutive slides sharing identical shape silhouettes.
 
 Every content slide should have a dominant proof object. If a slide has only
 prose, either move the prose to speaker notes, turn it into a diagram/table,

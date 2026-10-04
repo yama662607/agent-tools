@@ -10,7 +10,8 @@ video/animation bugs).
 Checks: ZIP integrity, package/content-type consistency, python-pptx re-open,
 relationship targets and references, media health via ffprobe, duplicate shape
 ids, animation target ids, placeholder debris in text, fake list markers,
-native slide text/table font sizes (16pt floor, including inherited sizes).
+native slide text/table font sizes (16pt floor, including inherited sizes),
+and title/element count consistency. Can emit a deterministic JSON receipt.
 --text dumps per-slide text instead.
 """
 import argparse
@@ -37,6 +38,10 @@ FAKE_LIST_MARKER_RE = re.compile(
 )
 BULLET_TAGS = ("buChar", "buAutoNum", "buBlip")
 R_NS = "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
+COUNT_IN_TITLE_RE = re.compile(
+    r"(?:^|[\s:：])([0-9０-９]+)\s*(?:つ|個|段階|ステップ|フェーズ|つの|点|項目|柱|stages?|steps?|phases?|pillars?|points?)",
+    re.IGNORECASE
+)
 
 
 def fail(msg: str, problems: list[str]) -> None:
@@ -95,6 +100,8 @@ def main() -> None:
                    help="dump per-slide text and exit")
     p.add_argument("--font-size-exceptions", type=Path,
                    help="JSON allowlist of exact slide/shape names, roles and reasons for small auxiliary text")
+    p.add_argument("--receipt", type=Path,
+                   help="path to write deterministic JSON receipt")
     args = p.parse_args()
     path = Path(args.pptx)
     problems: list[str] = []
@@ -378,12 +385,85 @@ def main() -> None:
         except (OSError, ValueError, TypeError) as error:
             fail(f"font-size exceptions: {error}", problems)
     font_issues, exempted = check_text_sizes(prs, exceptions)
-    for message in font_issues:
-        fail(message, problems)
+    for issue in font_issues:
+        fail(issue, problems)
     for message in exempted:
         print(f"  EXEMPT {message}")
     if not font_issues:
         ok("native slide text/tables meet 16pt floor or have explicit exceptions")
+
+    # --- title & element count consistency ---------------------------------
+    count_mismatches = []
+    for i, slide in enumerate(prs.slides, 1):
+        title_text = ""
+        if slide.shapes.title and slide.shapes.title.has_text_frame:
+            title_text = slide.shapes.title.text_frame.text.strip()
+        if not title_text:
+            # fallback: find first prominent text shape
+            for s in slide.shapes:
+                if s.has_text_frame and s.text_frame.text.strip():
+                    title_text = s.text_frame.text.strip()
+                    break
+        m = COUNT_IN_TITLE_RE.search(title_text)
+        if m:
+            expected_count = int(m.group(1).translate(str.maketrans("０１２３４５６７８９", "0123456789")))
+            # Count bullet points or card items in the slide
+            item_count = 0
+            for s in slide.shapes:
+                if s == slide.shapes.title:
+                    continue
+                if s.has_text_frame:
+                    paras = [p for p in s.text_frame.paragraphs if p.text.strip()]
+                    if len(paras) > 1:
+                        item_count += len(paras)
+                    elif len(paras) == 1 and s.width > s.height:
+                        item_count += 1
+            if item_count > 0 and item_count != expected_count:
+                count_mismatches.append(
+                    f"slide {i}: title mentions {expected_count} items ({title_text!r}), "
+                    f"but body appears to have {item_count} items"
+                )
+    if count_mismatches:
+        fail(f"title count does not match body elements: {count_mismatches}", problems)
+    else:
+        ok("title count matches body elements (or no count declared)")
+
+    # --- layout variety & monotony check (Anti-Cardocalypse) --------------
+    # Detect 3+ consecutive slides with identical body shape silhouettes
+    monotony_issues = []
+    signatures = []
+    for i, slide in enumerate(prs.slides, 1):
+        body_shapes = []
+        for s in slide.shapes:
+            if s == slide.shapes.title:
+                continue
+            # Skip small footer/page-number text near bottom
+            if s.has_text_frame and s.top > prs.slide_height * 0.9 and s.height < prs.slide_height * 0.1:
+                continue
+            # Characterize shape
+            stype = "table" if s.has_table else ("pic" if s.shape_type == 13 else "shape")
+            # Normalized relative position and size (bucketed to 0.1 increments)
+            rx = round(s.left / prs.slide_width, 1)
+            ry = round(s.top / prs.slide_height, 1)
+            rw = round(s.width / prs.slide_width, 1)
+            rh = round(s.height / prs.slide_height, 1)
+            body_shapes.append((stype, rx, ry, rw, rh))
+        body_shapes.sort()
+        signatures.append(tuple(body_shapes))
+
+    # Check for 3+ identical consecutive signatures
+    streak_start = 0
+    for idx in range(1, len(signatures)):
+        if signatures[idx] and signatures[idx] == signatures[idx - 1]:
+            if idx - streak_start + 1 >= 3:
+                monotony_issues.append(f"slides {streak_start + 1}..{idx + 1}")
+        else:
+            streak_start = idx
+
+    if monotony_issues:
+        fail(f"layout monotony detected (3+ consecutive slides with identical composition): {monotony_issues}", problems)
+    else:
+        ok("layout variety confirmed (no 3+ consecutive slides with identical silhouette)")
 
     # --- media health -------------------------------------------------------
     media = [n for n in names if n.startswith("ppt/media/")
@@ -418,6 +498,30 @@ def main() -> None:
 
     # --- summary --------------------------------------------------------------
     print()
+    passed = (len(problems) == 0)
+    if args.receipt:
+        receipt_data = {
+            "passed": passed,
+            "deck": str(path),
+            "slide_count": len(prs.slides),
+            "problems": problems,
+            "checks": {
+                "zip_integrity": True,
+                "package_consistency": True,
+                "relationships": bad_rel_refs == [],
+                "unique_shapes": dup_report == [],
+                "animation_targets": bad_animation_targets == [],
+                "no_placeholder_debris": debris == [],
+                "native_lists": fake_list_markers == [],
+                "text_readability_16pt": len(font_issues) == 0,
+                "count_consistency": count_mismatches == [],
+                "layout_variety": len(monotony_issues) == 0,
+            }
+        }
+        args.receipt.parent.mkdir(parents=True, exist_ok=True)
+        args.receipt.write_text(json.dumps(receipt_data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        print(f"Receipt written to {args.receipt}")
+
     if problems:
         print(f"RESULT: {len(problems)} problem(s) — fix before delivering")
         sys.exit(1)

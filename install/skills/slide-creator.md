@@ -55,6 +55,7 @@ Dependencies and runtime notes:
 - `python`: Python scripts use uv inline metadata where available.
 - `uv`: Used to run bundled Python scripts without project-local dependency setup.
 - `bun`: Optional until native equation conversion is needed; do not run bun install without consent.
+- `Google Chrome, Microsoft Edge, or Playwright Chromium`: Only needed for HTML mock PNG export and browser layout checks; the standalone mock HTML opens without a server.
 - `Microsoft PowerPoint for Mac`: Needed only for macOS high-fidelity visual QA PDF export.
 - `ffmpeg and ffprobe`: Needed for video normalization, codec verification, duration checks, and last-frame extraction.
 - `LibreOffice`: Approximate rendering fallback on macOS, Linux, and Windows; never use it to re-save a deck.

@@ -10,7 +10,7 @@
       "display_name": "slide-creator",
       "source_path": "skills/slide-creator",
       "install_guide": "install/skills/slide-creator.md",
-      "description": "Create, edit, inspect, and validate PowerPoint .pptx decks, including native equations, embedded videos, animations, PowerPoint PDF QA, existing-deck ingestion, and safe human-agent round-trip workflows.",
+      "description": "Create, edit, inspect, and validate PowerPoint .pptx decks, with Markdown/HTML storyboards for content review, native equations, embedded videos, animations, PowerPoint PDF QA, existing-deck ingestion, and safe human-agent round-trip workflows.",
       "risk_level": "medium",
       "copy_mode": "copy-directory",
       "supported_agents": [
@@ -63,6 +63,12 @@
           "required_for_install": false,
           "required_for_runtime": false,
           "notes": "Optional until native equation conversion is needed; do not run bun install without consent."
+        },
+        {
+          "name": "Google Chrome, Microsoft Edge, or Playwright Chromium",
+          "required_for_install": false,
+          "required_for_runtime": false,
+          "notes": "Only needed for HTML mock PNG export and browser layout checks; the standalone mock HTML opens without a server."
         },
         {
           "name": "Microsoft PowerPoint for Mac",

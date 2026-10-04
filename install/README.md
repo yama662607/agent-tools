@@ -8,7 +8,7 @@ dry-run requirements, verification, and rollback instructions.
 
 | Tool | Kind | Install guide | Notes |
 |---|---|---|---|
-| `slide-creator` | skill | [install/skills/slide-creator.md](install/skills/slide-creator.md) | Create, edit, inspect, and validate PowerPoint .pptx decks, including native equations, embedded videos, animations, PowerPoint PDF QA, existing-deck ingestion, and safe human-agent round-trip workflows. |
+| `slide-creator` | skill | [install/skills/slide-creator.md](install/skills/slide-creator.md) | Create, edit, inspect, and validate PowerPoint .pptx decks, with Markdown/HTML storyboards for content review, native equations, embedded videos, animations, PowerPoint PDF QA, existing-deck ingestion, and safe human-agent round-trip workflows. |
 
 ## Stable Release
 
