@@ -84,6 +84,7 @@ keep targeted edits small and preserve the supplied template.
 | Genre rules (academic/business/lecture) | read [references/design-profiles.md](references/design-profiles.md) |
 | Review / QA checklists & prohibitions | read [references/qa-checklist.md](references/qa-checklist.md) |
 | Layout geometry & anti-slop rules | read [references/layout-rules.md](references/layout-rules.md) |
+| Visual exhibits & 5 drawing methods | read [references/visual-exhibits.md](references/visual-exhibits.md) |
 | Japanese AI-slop vocabulary filter | read [references/ai-smell-lexicon.md](references/ai-smell-lexicon.md) |
 | High-fidelity visual QA artifact | `uv run scripts/powerpoint_pdf_qa.py deck.pptx --out qa/powerpoint-pdf --pdf-only` |
 | Approximate render of a few slides (PowerPoint busy/unavailable) | `uv run scripts/render_slides.py deck.pptx --slides 2,7 --out qa/approx` |

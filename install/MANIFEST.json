@@ -107,8 +107,8 @@
     },
     {
       "path": "skills/slide-creator/SKILL.md",
-      "sha256": "ca9cea77d347e6556161e88ef2bd8244e42dfa76a864798e79726fade91aac7c",
-      "size": 18642
+      "sha256": "39d3f571bdfd73b240dee44a1dab12214d4d3efdcdab3dbfec11c5eb66e220b0",
+      "size": 18752
     },
     {
       "path": "skills/slide-creator/assets/html-mock/example.json",
@@ -134,6 +134,11 @@
       "path": "skills/slide-creator/assets/html-mock/viewer.html",
       "sha256": "f361128e0eedb3d35efd5c338a47c09cd418a9576d9231cadfb71845a1dd10cf",
       "size": 1094
+    },
+    {
+      "path": "skills/slide-creator/assets/styles/slide_light.mplstyle",
+      "sha256": "1f144ef3231f31893f7be1639740ad373de98fa33cee2916e8cdd68815a140b6",
+      "size": 662
     },
     {
       "path": "skills/slide-creator/assets/timing-templates/effect-appear.xml",
@@ -234,6 +239,11 @@
       "path": "skills/slide-creator/references/video.md",
       "sha256": "d571cce2b971bd38a71b6a9c3fb9c9da0bca761d1d2ba0a24ff3c62ed4ecb03f",
       "size": 6967
+    },
+    {
+      "path": "skills/slide-creator/references/visual-exhibits.md",
+      "sha256": "6f7940778b649093c85b7cfb3a4f318aeb3ee3b9d5eeba2be18cfd9a71d349ad",
+      "size": 6248
     },
     {
       "path": "skills/slide-creator/scripts/add_equation.py",
