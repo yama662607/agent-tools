@@ -158,6 +158,13 @@ more.
 
 ## Academic profiles
 
+**Academic core discipline** (adapted from academic presentations best practices):
+- **Lead with the research question**: State the central puzzle or question early (by slide 2 or 3 at the latest). Do not bury it behind generic background.
+- **Narrative spine**: Use SCR (Situation / Complication / Resolution) or Funnel structure.
+- **One exhibit per slide**: Every content slide must have one dominant proof object that directly supports the action title.
+- **Text ceiling**: Target ~40 words per slide for live presentations. Bullets are orientation cues, not spoken script transcripts.
+- **Figure rebuild**: Re-plot paper figures for slide resolution (font ≥ 16 pt at final scale, 2–3× line widths).
+
 ### progress-meeting(進捗報告)
 
 The audience is your PI and labmates; the *product of the meeting is the

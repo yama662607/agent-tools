@@ -144,7 +144,7 @@ always visible to the audience.
 |---|---|---|
 | Body font | ≥ 18 pt (prefer 20–24) | Harvard Chan, ACU, WCAG-derived |
 | Title font | ≥ 24 pt (prefer 26–28 here) | Harvard Chan, ACU |
-| Conditions/captions | 13–14 pt if needed for interpretation; 11–12 pt only for pure source notes | projection practice |
+| Conditions/captions | ≥ 16 pt when needed for interpretation; 11–14 pt only for explicitly exempted source/auxiliary text | skill's static floor + visual QA |
 | Contrast | ≥ 4.5:1 body, ≥ 3:1 large text | WCAG 2.x AA |
 | Bullets per slide | ≤ 4 | Harvard Chan, ACU, TEDx |
 | Colors | ≤ 3–4 beyond black/white | McKinsey convention, Ethos3 |
@@ -155,6 +155,35 @@ always visible to the audience.
 
 These are floors for delivered decks; a deliberate design choice may exceed
 them, but must be a choice, not an accident.
+
+`verify_deck.py` enforces a 16pt lower floor for non-empty native slide text
+and tables. This catches obvious small-text failures; the body recommendation
+above remains ≥18pt. Small auxiliary text needs a specific slide/shape
+exception, permitted role and reason — see
+[text-readability.md](text-readability.md). Chart-owned labels and text inside
+images/SmartArt still need visual review; a static pass is not a readability
+or text-fit certification.
+
+## Fresh-Eye Review (独立サブエージェント・レビュー規約)
+
+機械チェック通過後、文脈やプロンプトを一切伏せた独立サブエージェントに成果物（HTML/PDF/PPTX）を読ませて「作った本人には見えない破綻」を抽出する。
+
+### レビュアー指示の核
+1. **日本語・文体**: 完了形と進行形の取り違え、不自然な名詞圧縮語、表記揺れ、AI特有の定型句。
+2. **論理展開**: タイトル通し読みでの論理の飛び、前提と結論の逆転、左（前提）→右（帰結）の不一致。
+3. **破綻検査**: タイトルに書いた数と要素数の不一致、未証明の評価語（「十分な成果」等）、出典欠落。
+
+### 採否表（Decision Table）フォーマット
+レビュアーから返ってきた指摘は鵜呑みにせず、必ず以下の採否表にまとめてから修正に着手する：
+
+| # | ページ | 指摘内容（原文のまま） | 種別 | 採否 | 対応・理由 |
+|---|---|---|---|---|---|
+| 1 | P.3 | 「精度帯に追いついた」は完了形で不自然 | 日本語 | 採用 | 「追いついている」に修正 |
+| 2 | P.5 | 前提の表から結論が導けていない | 論理 | 採用 | 右カラム見出しを「したがって◯◯」に変更 |
+| 3 | P.7 | 海外プレイヤーの定義が曖昧 | 日本語 | 不採用 | 意図的な総称であり先行スライドで定義済み |
+
+種別: 日本語 / 論理 / 破綻（数・図・数値） / 体裁
+採否: 採用 / 不採用 / 保留
 
 ## Prohibitions
 
@@ -250,7 +279,9 @@ objects — treat them as geometry systems, not decoration):
 
 1. `uv run scripts/powerpoint_pdf_qa.py deck.pptx --out qa/powerpoint-pdf --pdf-only` —
    PowerPoint PDF artifact exists and was inspected.
-2. `uv run scripts/verify_deck.py deck.pptx` — structural pass required.
+2. `uv run scripts/verify_deck.py deck.pptx [--font-size-exceptions text-exceptions.json]` —
+   structural and native-text font-size pass required. Supply the same
+   explicit exceptions used after BUILD.
 3. **Title read-through**: read only the titles in order — they must tell
    the complete story on their own (horizontal flow).
 4. **Glance test**: each slide's point graspable in ~3 seconds at thumbnail

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="700" height="430" viewBox="0 0 700 430">
+  <rect width="700" height="430" fill="#f5f7fa"/>
+  <g font-family="Hiragino Kaku Gothic ProN,Arial,sans-serif" text-anchor="middle" fill="#182333">
+    <circle cx="170" cy="190" r="95" fill="#e1eafa"/>
+    <circle cx="520" cy="190" r="95" fill="#e5eef0"/>
+    <text x="170" y="185" font-size="34">根拠となる図</text>
+    <text x="520" y="185" font-size="34">読み取る内容</text>
+    <path d="M290 190H395M375 172L395 190L375 208" stroke="#2456a6" stroke-width="5" fill="none"/>
+    <text x="350" y="350" font-size="28" fill="#526278">図を見せる理由を、説明と対応させる</text>
+  </g>
+</svg>

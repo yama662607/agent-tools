@@ -2,8 +2,8 @@
   "files": [
     {
       "path": ".github/workflows/install-lint.yml",
-      "sha256": "0cad46967ad20cc24ce56ac4b3e955f8eb5deb6b130123b9cf8154482138d56c",
-      "size": 1079
+      "sha256": "76cbbc1cde5cfdca5c05cd841e7f168bd3abedfbf6f09f4c728b6844218b7612",
+      "size": 1375
     },
     {
       "path": "README.md",
@@ -22,8 +22,8 @@
     },
     {
       "path": "catalog/skills.json",
-      "sha256": "b2482da07248a430851312921aa82e6bb4ef3690ba388e26166855d9ca377665",
-      "size": 4629
+      "sha256": "02fb4dc7e23877a5356afd0ac336dfdc16769ac151f72d07c8fe16ce228a1af0",
+      "size": 4982
     },
     {
       "path": "docs/install/AGENT_INSTALL_POLICY.md",
@@ -82,8 +82,8 @@
     },
     {
       "path": "install/README.md",
-      "sha256": "8bf89e40f22cdee04a9ea512f7e4eb55d40227a797db0699e9dd6ad4dc9f806e",
-      "size": 1312
+      "sha256": "58f9735490551b63309dcf2c2cb3fda65d7f2d6dfc70911a911124b0ef2f4b21",
+      "size": 1353
     },
     {
       "path": "install/ROLLBACK.md",
@@ -92,8 +92,8 @@
     },
     {
       "path": "install/skills/slide-creator.md",
-      "sha256": "e2869274630b7e956bdc147d11cd770a615f9d3b2a713ec0b596a9f6332da429",
-      "size": 4695
+      "sha256": "44cdac7444b7bc64b3a4b0d03fcd75b9a17e566b3d62d589ea18d61bfe8dd926",
+      "size": 4867
     },
     {
       "path": "scripts/check_install_docs.py",
@@ -107,8 +107,38 @@
     },
     {
       "path": "skills/slide-creator/SKILL.md",
-      "sha256": "66b2b220e64944377b82c243c8b21eb996f1ffb4dd0a702d132021e30dadf0f8",
-      "size": 16370
+      "sha256": "39d3f571bdfd73b240dee44a1dab12214d4d3efdcdab3dbfec11c5eb66e220b0",
+      "size": 18752
+    },
+    {
+      "path": "skills/slide-creator/assets/html-mock/example.json",
+      "sha256": "7234d38e9744412e572bfcfaa03e35d83295bf94e697eb7d457bfa51b3446d09",
+      "size": 5444
+    },
+    {
+      "path": "skills/slide-creator/assets/html-mock/example.svg",
+      "sha256": "e9be03fe29c81416c0b95db25bdd5d734a3af83e4e17c7d0826c5e962f136f5d",
+      "size": 707
+    },
+    {
+      "path": "skills/slide-creator/assets/html-mock/mock.css",
+      "sha256": "6bf7d1443d4c254b5a6ebf4a99dca6c5f38b7aee8a8603466515907529d42713",
+      "size": 5067
+    },
+    {
+      "path": "skills/slide-creator/assets/html-mock/mock.js",
+      "sha256": "9f7065ced43d689f02d28d3783a87883bf24e5be1251aaf06669252bbb35c87b",
+      "size": 2206
+    },
+    {
+      "path": "skills/slide-creator/assets/html-mock/viewer.html",
+      "sha256": "f361128e0eedb3d35efd5c338a47c09cd418a9576d9231cadfb71845a1dd10cf",
+      "size": 1094
+    },
+    {
+      "path": "skills/slide-creator/assets/styles/slide_light.mplstyle",
+      "sha256": "c915b4f04dac798ba7bb00764bd6c53f869f359e0156ef104a528f51c8c14f0b",
+      "size": 657
     },
     {
       "path": "skills/slide-creator/assets/timing-templates/effect-appear.xml",
@@ -126,6 +156,11 @@
       "size": 1049
     },
     {
+      "path": "skills/slide-creator/references/ai-smell-lexicon.md",
+      "sha256": "5b85dddcaf0d720358e71cd54771f78e05789b133a22757da602e7367a81ba32",
+      "size": 5952
+    },
+    {
       "path": "skills/slide-creator/references/animations.md",
       "sha256": "0af94ac484866ebf0ca040dcdac426fb71cb57f28b61ca779f9769d6ec838334",
       "size": 5118
@@ -136,9 +171,14 @@
       "size": 10105
     },
     {
+      "path": "skills/slide-creator/references/content-planning.md",
+      "sha256": "9f3d9e6ea7d50054e31a7834fbfbbe57b3141d888ef25a03d159b44c5edced85",
+      "size": 6108
+    },
+    {
       "path": "skills/slide-creator/references/creating.md",
-      "sha256": "dc62d6385a9e34953104091f6c3858df50a7c44d43f5afbd46bc99da4f6cd9ee",
-      "size": 9372
+      "sha256": "61519a85f668465d0975ff24561505c407a23db5555bc969cdd92a33dd111a14",
+      "size": 10710
     },
     {
       "path": "skills/slide-creator/references/design-principles.md",
@@ -147,13 +187,13 @@
     },
     {
       "path": "skills/slide-creator/references/design-profiles.md",
-      "sha256": "5176edf16a78d0af8c94c0abaa1971253443b9a091c7c44859a7a177f0376f99",
-      "size": 17284
+      "sha256": "46fae061abf9f54f657b9164605e5959b002166bfa2970d17062a25537cd103b",
+      "size": 17994
     },
     {
       "path": "skills/slide-creator/references/editing.md",
-      "sha256": "167f0b3e55abb8aa891e2fa397b9a71ed2364ad6871bfe88b0655f54e2ad9de7",
-      "size": 6373
+      "sha256": "1d40dc2f67e42f820693ea2f97e6561496cbef0a753b4322a6df07951bd41d3e",
+      "size": 6744
     },
     {
       "path": "skills/slide-creator/references/equations.md",
@@ -161,14 +201,24 @@
       "size": 4425
     },
     {
+      "path": "skills/slide-creator/references/html-mock.md",
+      "sha256": "52b56d238c48baf85950f31ba73375d124de143ba25e5002cba48d8fd441c21f",
+      "size": 7649
+    },
+    {
       "path": "skills/slide-creator/references/improving-existing-decks.md",
       "sha256": "8510c5bd09b9c5083ab98f8435e494f9b138b41dba3d10cbfd2a7c00a5e4852e",
       "size": 3062
     },
     {
+      "path": "skills/slide-creator/references/layout-rules.md",
+      "sha256": "13b2b577d9ed473e785fd8ea76d72a9cfafaf761394a55af36ebec3960ca4b6a",
+      "size": 5606
+    },
+    {
       "path": "skills/slide-creator/references/qa-checklist.md",
-      "sha256": "95331b56ad2d627449a6e5f6e922cdf397271a6f58f9ca840dffd5bed7efc29d",
-      "size": 14941
+      "sha256": "7359bc07f8825323b684f98b5fb4b77d898ace202e255999eb8194e3e31405e1",
+      "size": 17140
     },
     {
       "path": "skills/slide-creator/references/roundtrip.md",
@@ -181,9 +231,19 @@
       "size": 4793
     },
     {
+      "path": "skills/slide-creator/references/text-readability.md",
+      "sha256": "d49c169a50a4b0b185be0d611e48a9d21b1ebfce00e78fdff55d98c52c5a1eef",
+      "size": 6824
+    },
+    {
       "path": "skills/slide-creator/references/video.md",
       "sha256": "d571cce2b971bd38a71b6a9c3fb9c9da0bca761d1d2ba0a24ff3c62ed4ecb03f",
       "size": 6967
+    },
+    {
+      "path": "skills/slide-creator/references/visual-exhibits.md",
+      "sha256": "6f7940778b649093c85b7cfb3a4f318aeb3ee3b9d5eeba2be18cfd9a71d349ad",
+      "size": 6248
     },
     {
       "path": "skills/slide-creator/scripts/add_equation.py",
@@ -199,6 +259,11 @@
       "path": "skills/slide-creator/scripts/animate.py",
       "sha256": "528480b508ca504786b2e6bb4ce48e7513e6cae52a9c50d5bfc104d586469fe6",
       "size": 12233
+    },
+    {
+      "path": "skills/slide-creator/scripts/build_mock.py",
+      "sha256": "9fbdcbd472ab87e9e5a27a12bc18cb543147e7de91ddc9248ee7f570551e0baa",
+      "size": 13084
     },
     {
       "path": "skills/slide-creator/scripts/capture_edits.py",
@@ -224,6 +289,11 @@
       "path": "skills/slide-creator/scripts/extract_media.py",
       "sha256": "7a9fa898313b5d29c1ab8c166bf0d6a18d51726edd061797363649250e2fe9e3",
       "size": 7177
+    },
+    {
+      "path": "skills/slide-creator/scripts/extract_paper_assets.py",
+      "sha256": "36a5ae4832e8c910b85c13651c2a77ffb5766a6ffe7517cf9adad1002c4ba912",
+      "size": 6947
     },
     {
       "path": "skills/slide-creator/scripts/ingest_deck.py",
@@ -256,9 +326,19 @@
       "size": 15199
     },
     {
+      "path": "skills/slide-creator/scripts/render_mock.py",
+      "sha256": "ed2bd1426de261be5fd18a6dc8ed209af972c5f8248b1659b784662d52ca602a",
+      "size": 5514
+    },
+    {
       "path": "skills/slide-creator/scripts/render_slides.py",
       "sha256": "0f60c9a88e49f51bcfa5439c14327befe3b1d469bbd54b0639d124bab806bac0",
       "size": 3943
+    },
+    {
+      "path": "skills/slide-creator/scripts/reveal_equation.py",
+      "sha256": "54f001dbcb8d83c8a2b9f3ac3f733215738488d51e39b9ca1dcd679d20a25c8b",
+      "size": 4831
     },
     {
       "path": "skills/slide-creator/scripts/safe_rebuild.py",
@@ -266,14 +346,34 @@
       "size": 7472
     },
     {
+      "path": "skills/slide-creator/scripts/scan_stale_terms.py",
+      "sha256": "47075494618b634bba3b365112458826085edc21eb6a945acbd8f9e7136c6b93",
+      "size": 5020
+    },
+    {
       "path": "skills/slide-creator/scripts/sync_from_pptx.py",
       "sha256": "3f653d4e52d1775e0582bc5ead735d43ccabc8d1e9ef6c5bfa921fa072982701",
       "size": 40986
     },
     {
+      "path": "skills/slide-creator/scripts/text_options.mjs",
+      "sha256": "4f9765dfaf243c89444e541b72c2df2e6dde4435ba7f88ba91199821b5728baf",
+      "size": 1433
+    },
+    {
+      "path": "skills/slide-creator/scripts/text_readability.py",
+      "sha256": "ec1d717ceceb09d73a8f7ae24a153b647422fd5b4029302f1e1543052f6efaff",
+      "size": 8495
+    },
+    {
+      "path": "skills/slide-creator/scripts/text_style.py",
+      "sha256": "bdf0b30c9556909aba6143a31a0b4872ba969fe942837945a0c75f0cc363fac8",
+      "size": 906
+    },
+    {
       "path": "skills/slide-creator/scripts/verify_deck.py",
-      "sha256": "c09cfcd5ba032bd84ba7a1ae5cd5b6bf1fd2136a8f510883a48907fe27d2f577",
-      "size": 16226
+      "sha256": "fa70a5132924a195ea2e5a49f661eb17148d9b0f75750abcb5871639c88a0a7a",
+      "size": 22054
     }
   ],
   "release": "v0.2.0",

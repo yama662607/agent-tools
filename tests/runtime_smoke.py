@@ -44,6 +44,12 @@ def build_fixture(path: Path, image_path: Path) -> None:
 
 
 def main() -> None:
+    omml_dir = SCRIPTS / "omml"
+    omml_modules = omml_dir / "node_modules"
+    installed_here = False
+    if not omml_modules.exists():
+        subprocess.run(["bun", "install"], cwd=omml_dir, capture_output=True, check=True)
+        installed_here = True
     with tempfile.TemporaryDirectory(prefix="slide-creator-runtime-") as tmp:
         root = Path(tmp)
         deck = root / "fixture.pptx"
@@ -80,6 +86,45 @@ def main() -> None:
         run("sync_from_pptx.py", deck, "--inspect-only", "--out", report)
         assert len(json.loads(report.read_text(encoding="utf-8"))["slides"]) == 1
 
+        receipt = root / "receipt.json"
+        run("verify_deck.py", deck, "--receipt", receipt)
+        receipt_data = json.loads(receipt.read_text(encoding="utf-8"))
+        assert receipt_data["passed"] is True
+        assert receipt_data["checks"]["text_readability_16pt"] is True
+        assert receipt_data["checks"]["count_consistency"] is True
+        assert receipt_data["checks"]["layout_variety"] is True
+
+        # Test scan_stale_terms.py
+        stale_json = root / "stale.json"
+        run("scan_stale_terms.py", deck, "--json")
+
+        # Test extract_paper_assets.py
+        tex_sample = root / "paper.tex"
+        tex_sample.write_text(r"""
+\documentclass{article}
+\usepackage{graphicx}
+\begin{document}
+\begin{figure}
+  \includegraphics{fixture.png}
+  \caption{Test figure caption}
+  \label{fig:test}
+\end{figure}
+\end{document}
+""", encoding="utf-8")
+        fig_out = root / "paper_figures"
+        run("extract_paper_assets.py", tex_sample, "--out-dir", fig_out)
+        assert (fig_out / "inventory.json").is_file()
+
+        # Test reveal_equation.py (steps json)
+        steps_json = root / "eq_steps.json"
+        steps_json.write_text(json.dumps([
+            "E = mc^2",
+            "E = \\sqrt{p^2 c^2 + m^2 c^4}"
+        ]))
+        run("reveal_equation.py", deck, "--slide", 1, "--steps-json", steps_json, "--mode", "clone")
+        prs_after = Presentation(deck)
+        assert len(prs_after.slides) == 2
+
         run("safe_rebuild.py", "--deck", deck, expected=2)
         backups = root / "backups"
         run(
@@ -92,6 +137,17 @@ def main() -> None:
             backups,
         )
         assert len(list(backups.glob("fixture_backup_*.pptx"))) == 1
+
+        example = SCRIPTS.parent / "assets" / "html-mock" / "example.json"
+        mock = root / "mock"
+        run("build_mock.py", example, "--out", mock)
+        assert (mock / "index.html").is_file()
+        assert (mock / "plan.md").is_file()
+        assert "http://www.w3.org/1998/Math/MathML" in (mock / "index.html").read_text(encoding="utf-8")
+
+    if installed_here and omml_modules.exists():
+        import shutil
+        shutil.rmtree(omml_modules)
 
     print("slide-creator runtime smoke tests passed")
 

@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>@@TITLE@@ — 構成モック</title>
+  <style>@@CSS@@</style>
+</head>
+<body>
+  <header class="deck-header">
+    <div><p class="eyebrow">構成モック · @@COUNT@@枚</p><h1>@@TITLE@@</h1>
+    <p class="goal">@@GOAL@@</p><p class="audience">@@AUDIENCE@@</p></div>
+    <button id="toggle-notes" aria-pressed="false">構成メモを表示</button>
+  </header>
+  <main><div class="overview">@@CARDS@@</div></main>
+  <dialog id="detail" aria-label="スライド詳細">
+    <nav><button id="previous" aria-label="前のスライド">← 前</button>
+      <span id="slide-position"></span>
+      <button id="next" aria-label="次のスライド">次 →</button>
+      <button id="close-detail">一覧へ戻る</button></nav>
+    <div id="detail-preview" class="preview"></div>
+    <div id="detail-notes" class="notes"></div>
+  </dialog>
+  <script type="application/json" id="mock-metadata">@@META@@</script>
+  <script>@@JS@@</script>
+</body>
+</html>

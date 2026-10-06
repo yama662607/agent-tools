@@ -1,6 +1,6 @@
 ---
 name: slide-creator
-description: "Create and edit PowerPoint (.pptx) decks, with first-class support for native math equations (LaTeX → OMML), embedded videos, and animations/transitions — capabilities most pptx tooling lacks. Use whenever a .pptx file or slide deck is involved in any way: creating academic decks (progress meetings, journal clubs, conference talks), editing or reviewing existing decks, adding equations to slides, embedding simulation/experiment videos, adding slide transitions or shape animations, or extracting content from presentations. Trigger on mentions of 'slides', 'deck', 'presentation', 'PowerPoint', 'pptx', 'スライド', 'プレゼン', '発表資料', '進捗報告' — regardless of what the user plans to do with the content afterward."
+description: "Create, inspect, and edit PowerPoint (.pptx) decks. For new decks and broad restructuring, review narrative and content selection with Markdown/HTML storyboards before PPTX. Supports native LaTeX-to-OMML equations, embedded videos, animations, and safe PowerPoint hand-edit workflows. Use for slide decks, presentations, academic talks, 進捗報告, 論文紹介, スライド, and HTML slide mocks."
 license: MIT
 ---
 
@@ -24,7 +24,11 @@ references:
   from): first ingest and understand the deck's own design
   (`scripts/ingest_deck.py`), then make surgical edits that preserve it —
   read [references/improving-existing-decks.md](references/improving-existing-decks.md).
-- **New deck**: choose one genre profile and design the deck deliberately.
+- **New deck / broad restructuring**: plan the narrative, review an HTML
+  storyboard, then build the deck; read
+  [references/html-mock.md](references/html-mock.md).
+- **Mock only**: produce the Markdown/HTML storyboard and review evidence;
+  stop there unless the user also requests a PPTX.
 - **Round-trip collaboration**: when the user will manually adjust a generated
   deck in PowerPoint and wants future regeneration to preserve those edits,
   use a managed JS source block and read
@@ -37,10 +41,19 @@ level, and the deck's proof objects (figures, charts, equations, images,
 videos). Ask only for missing information. For targeted edits, do not run a
 brief gate; preserve the supplied deck and make the requested change.
 
-Before writing slide code for a new deck, write a compact quality plan:
-profile, title/claim spine, visual motif, palette roles, slide-family rhythm,
-and which proof object anchors each slide. If this plan would fit any deck
-after replacing the topic words, it is too generic — revise it before coding.
+Before writing slide code for a new deck, read
+[references/content-planning.md](references/content-planning.md) and write a
+compact content plan: claims, audience questions, proof objects, sources,
+transitions, and omission decisions. Then add the visual quality plan:
+profile, visual motif, palette roles, and slide-family rhythm. If either plan
+would fit any deck after replacing the topic words, revise it before coding.
+
+Make this plan visible as a static HTML storyboard before BUILD. Generate
+the Markdown view and HTML from the same content data, inspect the title
+sequence and rendered pages, then return adopted changes to that source.
+Read [references/html-mock.md](references/html-mock.md) for commands and
+flexible layouts. This is a pre-build step, not an extra approval requirement;
+keep targeted edits small and preserve the supplied template.
 
 ## Quick Reference
 
@@ -48,6 +61,8 @@ after replacing the topic words, it is too generic — revise it before coding.
 |------|----------|
 | Read / analyze a deck | `uv run scripts/verify_deck.py deck.pptx --text` or unzip + inspect XML |
 | Create a new deck | pptxgenjs — read [references/creating.md](references/creating.md) |
+| Build a Markdown/HTML storyboard from a content plan | `uv run scripts/build_mock.py deck-plan.json --out mock` — read [references/html-mock.md](references/html-mock.md) |
+| Export mock page/overview PNGs and browser layout report | `uv run scripts/render_mock.py mock/index.html --out mock/qa` |
 | Edit an existing deck | python-pptx + OOXML — read [references/editing.md](references/editing.md) |
 | Understand an existing hand-made deck (text+layout+media, optional thumbnails) | `uv run scripts/ingest_deck.py deck.pptx [--render qa/thumbs]` |
 | Follow a supplied template strictly | clone-and-edit — read [references/template-following.md](references/template-following.md) |
@@ -59,22 +74,38 @@ after replacing the topic words, it is too generic — revise it before coding.
 | Normalize writer package metadata | `scripts/normalize_package.py` after BUILD, before verification |
 | Duplicate / delete slides safely | `scripts/clone_slide.py` (rels/media/orphans handled) |
 | Add native math equations | `scripts/add_equation.py` — read [references/equations.md](references/equations.md) |
+| Incremental equation derivation (zero shift) | `uv run scripts/reveal_equation.py deck.pptx --slide N --steps-json steps.json` |
+| Extract paper TeX/MD figures & rasterize to PNG | `uv run scripts/extract_paper_assets.py paper.tex --out-dir assets/figures` |
+| Scan stale template text & outdated years | `uv run scripts/scan_stale_terms.py deck.pptx` |
 | Embed a video | `scripts/add_video.py` — read [references/video.md](references/video.md) |
 | Check embedded video completeness (duration + last frame) | `uv run scripts/check_video.py deck.pptx --thumb qa/video` |
 | Transitions / shape animations | `scripts/animate.py` — read [references/animations.md](references/animations.md) |
 | Design foundations (any deck) | read [references/design-principles.md](references/design-principles.md) |
 | Genre rules (academic/business/lecture) | read [references/design-profiles.md](references/design-profiles.md) |
 | Review / QA checklists & prohibitions | read [references/qa-checklist.md](references/qa-checklist.md) |
+| Layout geometry & anti-slop rules | read [references/layout-rules.md](references/layout-rules.md) |
+| Visual exhibits & 5 drawing methods | read [references/visual-exhibits.md](references/visual-exhibits.md) |
+| Japanese AI-slop vocabulary filter | read [references/ai-smell-lexicon.md](references/ai-smell-lexicon.md) |
 | High-fidelity visual QA artifact | `uv run scripts/powerpoint_pdf_qa.py deck.pptx --out qa/powerpoint-pdf --pdf-only` |
 | Approximate render of a few slides (PowerPoint busy/unavailable) | `uv run scripts/render_slides.py deck.pptx --slides 2,7 --out qa/approx` |
-| Final validation | `uv run scripts/verify_deck.py deck.pptx` |
+| Japanese text fonts, single-line title reserve, font-size exceptions | read [references/text-readability.md](references/text-readability.md); `scripts/text_options.mjs` / `scripts/text_style.py` |
+| Final validation | `uv run scripts/verify_deck.py deck.pptx [--font-size-exceptions text-exceptions.json]` |
 
-All Python scripts are self-contained (`uv run` resolves their dependencies
-inline). One-time setup for the equation converter: `cd scripts/omml && bun install`.
+Python command-line tools declare their dependencies inline (`uv run` resolves
+them); helper modules use the calling tool's environment. One-time setup for
+the equation converter: `cd scripts/omml && bun install`.
 
 Lists are always native PowerPoint lists. Never fake bullets or numbering
 with typed markers ("•", "1.", circled numbers) or detached marker shapes;
 use editable paragraph bullet/numbering properties instead.
+
+The static text gate rejects native slide body/table text below 16pt,
+including supported inherited sizes and saved autofit scaling. Deliberately
+small page numbers, source notes and auxiliary labels need an exact shape
+exception with a role and reason. Read
+[references/text-readability.md](references/text-readability.md); use the
+same exception file at PACKAGE and final VERIFY. A static pass does not
+replace font availability or text-fit checks in PowerPoint.
 
 ## The Build Order (non-negotiable)
 
@@ -85,12 +116,12 @@ engines can distort or corrupt some features:
 
 ```
 1. BUILD      deck structure + text + figures   (pptxgenjs or python-pptx)
-2. PACKAGE    normalize + structural gate        (normalize_package.py, then verify_deck.py)
+2. PACKAGE    normalize + structure/text gate     (normalize_package.py, then verify_deck.py)
 3. EQUATIONS  inject LaTeX-derived native math   (scripts/add_equation.py)
 4. VIDEO      normalize + embed videos           (scripts/add_video.py)
 5. VISUAL QA  PowerPoint PDF → inspect/review     (read-only! see below)
 6. ANIMATE    transitions + shape animations     (scripts/animate.py)
-7. VERIFY     structural checks, no rendering    (scripts/verify_deck.py)
+7. VERIFY     structure/text checks, no rendering (scripts/verify_deck.py)
 ```
 
 Rules that follow from hard-won community evidence:
@@ -232,8 +263,10 @@ slide quality.
 
 Font caveat: even with PowerPoint export, text can drift on another machine if
 the presentation uses fonts not installed there. Hiragino/Arial are safe on
-this Mac; equations use Cambria Math. For Windows-bound decks add ~10% width
-slack.
+this Mac; equations use Cambria Math. For Windows-bound decks, choose fonts
+available there and inspect the target rendering. The single-line title
+reserve in [references/text-readability.md](references/text-readability.md)
+is a starting allowance, not a universal percentage or fit guarantee.
 
 ## Final Verification (step 7)
 
