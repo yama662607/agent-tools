@@ -107,8 +107,8 @@
     },
     {
       "path": "skills/slide-creator/SKILL.md",
-      "sha256": "ed69862b82499103c827dd7a34a98cefcb1915b64cd3c9fae97982f62b163895",
-      "size": 19419
+      "sha256": "1e7dd6a6c4acf97daea00b6ff7ff2400c493e206426977c94e602abd3d10376b",
+      "size": 19648
     },
     {
       "path": "skills/slide-creator/assets/html-mock/example.json",
@@ -217,8 +217,8 @@
     },
     {
       "path": "skills/slide-creator/references/poster.md",
-      "sha256": "c459e7bd3d81bf64eb8e23332e2d13fcfe4e2777447db22d201c3486ee8c4aab",
-      "size": 14316
+      "sha256": "dbab0962699bf72086dff688858eb3e04aa5356eb6405e4f8d2ffe423a8ce99a",
+      "size": 17041
     },
     {
       "path": "skills/slide-creator/references/qa-checklist.md",

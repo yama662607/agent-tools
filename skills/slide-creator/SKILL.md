@@ -26,9 +26,13 @@ references:
   read [references/improving-existing-decks.md](references/improving-existing-decks.md).
 - **Poster** (A0/A1 academic poster; "ポスター", "ポスター発表"): one page read at
   1–2 m, a different artifact from a talk. Read
-  [references/poster.md](references/poster.md) and use the `poster` profile;
-  if the human edits the .pptx first, the saved file is the master — follow the
-  hand-edit-first workflow in poster.md §10 (no regeneration).
+  [references/poster.md](references/poster.md) and use the `poster` profile.
+  - **New poster, no .pptx yet**: follow the step-by-step workflow in
+    poster.md §0 (intake → plan → build → gates → PDF QA → deliver). Do not
+    reuse talk slides.
+  - **A .pptx exists and the human may have edited it**: the saved file is the
+    master. Follow the hand-edit-first workflow in poster.md §10 (no
+    regeneration).
 - **New deck / broad restructuring**: plan the narrative, review an HTML
   storyboard, then build the deck; read
   [references/html-mock.md](references/html-mock.md).
@@ -65,7 +69,7 @@ keep targeted edits small and preserve the supplied template.
 | Task | Approach |
 |------|----------|
 | Read / analyze a deck | `uv run scripts/verify_deck.py deck.pptx --text` or unzip + inspect XML |
-| Posters (A0 setup, type scale, dpi, print export, hand-edit workflow) | read [references/poster.md](references/poster.md); `uv run scripts/poster_check.py poster.pptx`, `verify_deck.py poster.pptx --profile poster`, `scripts/poster_scaffold.mjs` |
+| Posters (new-poster steps §0, A0 setup, type scale, dpi, print export, hand-edit workflow §10) | read [references/poster.md](references/poster.md); `uv run scripts/poster_check.py poster.pptx`, `verify_deck.py poster.pptx --profile poster`, `scripts/poster_scaffold.mjs` |
 | Create a new deck | pptxgenjs — read [references/creating.md](references/creating.md) |
 | Build a Markdown/HTML storyboard from a content plan | `uv run scripts/build_mock.py deck-plan.json --out mock` — read [references/html-mock.md](references/html-mock.md) |
 | Export mock page/overview PNGs and browser layout report | `uv run scripts/render_mock.py mock/index.html --out mock/qa` |
