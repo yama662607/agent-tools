@@ -12,7 +12,7 @@ dry-run requirements, verification, and rollback instructions.
 
 ## Stable Release
 
-These guides are prepared for `v0.2.0` from:
+These guides are prepared for `v0.3.0` from:
 
 - https://github.com/yama662607/agent-tools
 

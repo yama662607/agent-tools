@@ -12,17 +12,17 @@
     },
     {
       "path": "catalog/bundles.json",
-      "sha256": "617f4eb0522ba51c836bf28ba6928197ca55bd8b0285995a9f279d936f4bed6d",
+      "sha256": "c4e342c9b00522f80963264da66a7c8a62b9d45a566ae2842fa5cf3132e0db9b",
       "size": 127
     },
     {
       "path": "catalog/mcp.json",
-      "sha256": "824bd468bbc64fa3260194a5069d26cf9d917038c7ec3a025d144fc65d5e03bb",
+      "sha256": "241c7e02c6cc1a48247b06ba0949c9f35451831290c09a8e1afcbf5532260ae2",
       "size": 131
     },
     {
       "path": "catalog/skills.json",
-      "sha256": "b2482da07248a430851312921aa82e6bb4ef3690ba388e26166855d9ca377665",
+      "sha256": "c91937d2a6361e6ad0068a0c7376b16042a1e00ddb0c961e4fd027abbbc0be1a",
       "size": 4629
     },
     {
@@ -81,29 +81,34 @@
       "size": 1541
     },
     {
+      "path": "docs/plans/slide-creator-v0.3.0.md",
+      "sha256": "4b2cf5b2192cc5d5d2ee830396ae6a5a707ec43a9dc19ca56c5f8da8d4aeeb35",
+      "size": 1270
+    },
+    {
       "path": "install/README.md",
-      "sha256": "8bf89e40f22cdee04a9ea512f7e4eb55d40227a797db0699e9dd6ad4dc9f806e",
+      "sha256": "f49bd28a43bf2794a70885f079b114854c0ef5412d3c5e8d0cae1bef7bba85ba",
       "size": 1312
     },
     {
       "path": "install/ROLLBACK.md",
-      "sha256": "edfec542623a574722fb0944d83b490d8581204f0b41af3d40eba626aeb7bf63",
+      "sha256": "56f81292698cd48f325d5e34d0e96dd6be38f41f7e6991e0798efbf65276f47b",
       "size": 915
     },
     {
       "path": "install/skills/slide-creator.md",
-      "sha256": "e2869274630b7e956bdc147d11cd770a615f9d3b2a713ec0b596a9f6332da429",
-      "size": 4695
+      "sha256": "ed744f3ca04a39d66deed122f61f010f83f9a07a8d318787872b7a92f73545be",
+      "size": 4859
     },
     {
       "path": "scripts/check_install_docs.py",
-      "sha256": "249a019768f95f54ac3f3c659dede5c4e0e6afe22e2b6fe961046458ae0e7eb7",
+      "sha256": "d1a36b8dd00e0cdea57672c97879e98526b1fb817a86b8f70d99d6a3c6237983",
       "size": 7007
     },
     {
       "path": "scripts/generate_install_docs.py",
-      "sha256": "6a9e2cf75c112b56f88e348cb2bd8b84acbfb498ac2f0f7b7009d2911f2f4db7",
-      "size": 11243
+      "sha256": "cbeb89bf02e1b0a102cd7e2669ffcaa849d73caf2253ae544040f46aa940babb",
+      "size": 11407
     },
     {
       "path": "skills/slide-creator/SKILL.md",
@@ -391,7 +396,7 @@
       "size": 23775
     }
   ],
-  "release": "v0.2.0",
+  "release": "v0.3.0",
   "repository": "https://github.com/yama662607/agent-tools",
   "schema_version": 1,
   "self_hash_excluded": "install/MANIFEST.json"
