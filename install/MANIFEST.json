@@ -207,8 +207,8 @@
     },
     {
       "path": "skills/slide-creator/references/improving-existing-decks.md",
-      "sha256": "8510c5bd09b9c5083ab98f8435e494f9b138b41dba3d10cbfd2a7c00a5e4852e",
-      "size": 3062
+      "sha256": "3ec0a6b6e3286bcf1ac790c5c9078c6631ba2cf8ce5bdf6a59adfce2be87d580",
+      "size": 4402
     },
     {
       "path": "skills/slide-creator/references/layout-rules.md",
@@ -272,8 +272,8 @@
     },
     {
       "path": "skills/slide-creator/scripts/capture_edits.py",
-      "sha256": "d23c2b758081fa27197db2b18295e94c06f208454927a60d07f011ea0d36c97d",
-      "size": 27596
+      "sha256": "5986702a99e8b158d074c493dee9eb3ae8c1fdfdaf4ce6a03ffb81dd5dad2d3d",
+      "size": 28928
     },
     {
       "path": "skills/slide-creator/scripts/check_video.py",
