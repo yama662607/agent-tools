@@ -19,7 +19,7 @@ Options:
   -t, --timeout <secs>   Timeout in seconds per attempt (default: 600; deep=3600)
   -R, --retries <count>  Retry on timeout/capacity/network issues (default: 0)
   -j, --jobs <count>     Max parallel jobs (default: 0=auto, multi-query=2)
-  -m, --model <name>     Antigravity model name (default: Claude Sonnet 5.5 (High))
+  -m, --model <name>     Antigravity model name (default: Claude Sonnet 4.6 (Thinking))
   -x, --rpm <count>      Rate limit: requests per minute (default: 0=unlimited)
       --progress         Enable progress logs ([info]) on stderr
   -v, --verbose          Enable extra debug logs ([log]) on stderr
@@ -46,7 +46,7 @@ TIMEOUT_SECS="600"
 RETRIES="0"
 MAX_JOBS="0"
 JOBS_SET="0"
-MODEL_NAME="Claude Sonnet 5.5 (High)"
+MODEL_NAME="Claude Sonnet 4.6 (Thinking)"
 VERBOSE="0"
 SHOW_PROGRESS="0"
 TIMEOUT_SET="0"
