@@ -38,6 +38,27 @@ This is a targeted-edit job — read [editing.md](editing.md):
 means retyping the user's deck from a lossy reading of it — content and
 formatting will silently drift. Change only what was asked.
 
+### Quality pass on a deck the user already likes
+
+When the user asks to "raise the quality" but keep their layout, work in this
+order. Each step is a small, reviewable edit:
+
+1. **Find problems, change nothing yet**: `verify_deck.py deck.pptx` (the
+   16 pt floor, placeholder text, structure) and
+   `scan_stale_terms.py deck.pptx` (stale years, leftover template terms, `XXX`,
+   Japanese placeholders like 未定).
+2. **Mechanical fixes that keep the layout**: raise sub-floor run sizes to the
+   floor (16 pt) with run-level edits only. Do not move, resize, or restyle
+   shapes to make room; if the larger text overflows, report it and ask.
+3. **Content fixes need the user**: placeholders, stale years, and weak titles
+   are content decisions. Propose the replacement text (for a title, a claim
+   that the deck's own bullets support) and apply it only when the user agrees.
+   Never invent numbers or claims.
+4. **Verify the residual**: `capture_edits.py` must list exactly the changes
+   you made, including font-size changes (it reports `text_props_changed` with
+   `font_size_from` / `font_size_to`). Then check the touched slides in
+   PowerPoint PDF QA, not LibreOffice (see below).
+
 ## Step 3 — Guardrail: the deck is a user-owned master
 
 - **Back it up before the first edit** with an OS-native file copy. Never edit
@@ -66,4 +87,6 @@ uv run scripts/check_video.py deck.pptx --thumb qa/video         # if videos inv
 ```
 
 Use PowerPoint PDF QA (`powerpoint_pdf_qa.py`) before final delivery, as for
-any deck a human will see.
+any deck a human will see. `render_slides.py` (LibreOffice) is only a rough
+check: on this Mac it draws no Japanese glyphs, so do not judge Japanese text
+from its PNGs.

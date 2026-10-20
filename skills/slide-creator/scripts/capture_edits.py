@@ -351,7 +351,8 @@ def _record(slide, kind, matched_by, confidence, reason, **kw):
            "confidence": confidence, "reason": reason,
            "suspected_noise": kw.get("suspected_noise", False)}
     for k in ("before_bbox", "after_bbox", "text_from", "text_to", "deltas",
-              "sha1_from", "sha1_to", "line_spacing_from", "line_spacing_to"):
+              "sha1_from", "sha1_to", "line_spacing_from", "line_spacing_to",
+              "font_size_from", "font_size_to"):
         if k in kw:
             rec[k] = kw[k]
     grp = "moved"
@@ -437,6 +438,36 @@ def _emit_props(slide, r, e, matched_by):
                    line_spacing_from=ls_r, line_spacing_to=ls_e)
 
 
+def _run_sizes(sh):
+    """Font sizes (a:rPr/@sz, 1/100 pt) of the non-empty runs, in document order,
+    including table cells. None = run has no explicit size (inherited)."""
+    try:
+        el = sh._element
+    except Exception:
+        return []
+    out = []
+    for run in el.findall(".//a:r", NS):
+        t = run.find("a:t", NS)
+        if t is None or not (t.text or "").strip():
+            continue
+        rpr = run.find("a:rPr", NS)
+        out.append(rpr.get("sz") if rpr is not None else None)
+    return out
+
+
+def _emit_font(slide, r, e, matched_by):
+    """Font-size edits are invisible to the text and bbox diff, so a font change
+    alone would otherwise read as 'No differences'. Always on, not --deep."""
+    sz_r, sz_e = _run_sizes(r["sh"]), _run_sizes(e["sh"])
+    if sz_r == sz_e:
+        return None
+    conf = "high" if (matched_by == "text" and len(sz_r) == len(sz_e)) else "medium"
+    return _record(slide, "text_props_changed", matched_by, conf,
+                   "run font size differs (sz in 1/100 pt; None=inherited)",
+                   before_bbox=_bbox(r["sh"]), after_bbox=_bbox(e["sh"]),
+                   font_size_from=sz_r, font_size_to=sz_e)
+
+
 def diff_slide(slide_no, ref_shapes, ed_shapes, th, tol, deep=False):
     refs = [_meta(s) for s in _iter(ref_shapes)]
     eds = [_meta(s) for s in _iter(ed_shapes)]
@@ -447,6 +478,9 @@ def diff_slide(slide_no, ref_shapes, ed_shapes, th, tol, deep=False):
         rec = _emit_pair(slide_no, r, e, amb, mb, th)
         if rec:
             changes.append(rec)
+        frec = _emit_font(slide_no, r, e, mb)
+        if frec:
+            changes.append(frec)
         if deep:
             prec = _emit_props(slide_no, r, e, mb)
             if prec:
