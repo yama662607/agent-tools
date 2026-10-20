@@ -258,8 +258,10 @@ OS-appropriate cache path like:
 %USERPROFILE%\\.agent-tools\\cache\\agent-tools\\{release}\\<commit>
 ```
 
-Verify `install/MANIFEST.json` before installing. If the manifest check fails,
-stop and report the mismatch.
+Verify `install/MANIFEST.json` before installing. From the fetched release
+directory, run `python3 scripts/check_install_docs.py` (Python 3 standard
+library only). It re-checks the manifest hashes and the generated guides.
+If the check fails, stop and report the mismatch.
 
 ## Install
 
