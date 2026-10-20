@@ -12,6 +12,56 @@ profile in [design-profiles.md](design-profiles.md), then this file. Where the
 profile and a slide rule disagree (font floors, density, bullets), the poster
 wins.
 
+## 0. New poster: step by step
+
+Use this for a poster that does not exist yet. If a `.pptx` already exists and
+a human may have edited it, use §10 instead: the saved file is the master.
+Work through the steps in order. Each gate must pass before the next step.
+
+1. **Intake.** Get these from the user, and ask for anything missing. Do not
+   invent them:
+   - venue size (A0 or a stated cm size) and orientation;
+   - the claim (title) and the one-sentence takeaway;
+   - 3–5 evidence blocks, each with its figure and the numbers behind it;
+   - authors (presenter marked), affiliation, poster ID;
+   - references to cite, and the QR target (paper, code, or movie).
+2. **Plan the content.** Write each block as: assertion + one figure + at most
+   2–3 interpreting lines. Read only the heads (title, takeaway, block
+   assertions, conclusion) and check that they tell the whole story (§6).
+   Cut anything that belongs in the paper (§7).
+3. **Build directory.** Keep the build outside the skill:
+   ```bash
+   mkdir poster-build && cd poster-build && bun add pptxgenjs
+   cp <skill>/scripts/poster_scaffold.mjs .
+   bun poster_scaffold.mjs [--landscape] [--cols 3] --out poster.pptx
+   ```
+   Copy the scaffold into `build.mjs` and replace its placeholder text and
+   `BLOCKS` table with the content plan. Keep the `scid:` names. Set explicit
+   font sizes on every run (§3). Rebuild from this script; never edit the
+   `.pptx` by hand in this path.
+4. **Figures.** Export each figure at its placed size (§4). Compute the
+   effective dpi before placing it. Use SVG/EMF or PDF where possible.
+5. **Gates, in order.** Fix every FAIL before you continue.
+   ```bash
+   uv run scripts/normalize_package.py poster.pptx
+   uv run scripts/verify_deck.py poster.pptx --profile poster
+   uv run scripts/poster_check.py poster.pptx
+   ```
+   Read every WARN. A 20 pt QR placeholder warns by design; the QR code itself
+   must be a real image (§5).
+6. **Visual QA.** Export and read the PDF, not the slide preview:
+   ```bash
+   uv run scripts/powerpoint_pdf_qa.py poster.pptx --out qa --pdf-only
+   ```
+   This needs PowerPoint on macOS with no open presentations. If PowerPoint is
+   not available, run `scripts/render_slides.py ... --out qa/approx` and say in
+   your report that the render is approximate. Then work through the poster
+   items in [qa-checklist.md](qa-checklist.md#poster-checks-a0--poster-profile).
+7. **Deliver.** Give the user the print PDF (§8) and keep the `.pptx` as the
+   master. In your report, list what is still open: venue size confirmation,
+   QR image, font substitution on other machines, and any WARN you accepted.
+8. **After the human edits it.** Switch to §10 for every later change.
+
 ## 1. Page setup
 
 Use inches (PowerPoint/pptxgenjs/python-pptx all work in them). ISO sizes:
