@@ -102,6 +102,7 @@ def check_untracked_edits(
     reference: Path,
     deck: Path,
     allow_suspected_noise: bool = False,
+    poster: bool = False,
 ) -> int:
     """Run capture_edits.py; return 0 if clean, 3 if edits found, 1 on failure."""
     if shutil.which("uv") is None:
@@ -112,6 +113,8 @@ def check_untracked_edits(
     cmd = ["uv", "run", "--quiet", str(SCRIPTS_DIR / "capture_edits.py"),
            "--reference", str(reference), "--edited", str(deck),
            "--deep", "--json"]
+    if poster:
+        cmd.append("--poster")
     r = subprocess.run(cmd, capture_output=True, text=True)
     if r.returncode != 0:
         print(f"error: capture_edits.py failed (exit {r.returncode}):\n{r.stderr.strip()}",
@@ -160,6 +163,8 @@ def main():
         help="after manually reviewing the full capture report, allow only changes "
              "marked suspected_noise; all other changes still block rebuilding",
     )
+    ap.add_argument("--poster", action="store_true",
+                    help="A0-scale page: pass --poster to capture_edits.py (larger tolerances)")
     a = ap.parse_args()
 
     deck = Path(a.deck).expanduser()
@@ -183,7 +188,7 @@ def main():
     if not reference.is_file():
         print(f"error: reference deck not found: {reference}", file=sys.stderr)
         sys.exit(1)
-    rc = check_untracked_edits(reference, deck, a.allow_suspected_noise)
+    rc = check_untracked_edits(reference, deck, a.allow_suspected_noise, a.poster)
     if rc != 0:
         sys.exit(rc)
 

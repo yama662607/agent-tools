@@ -25,6 +25,7 @@ Two questions determine almost everything:
 | `consulting-deck` | decide | **read standalone** |
 | `pitch` | invest | presented (+ separate reading deck) |
 | `lecture` | learn & retain | presented + handout |
+| `poster` | stop, grasp the claim, then discuss with the author | **read standing at 1–2 m**, author nearby |
 | (template-following) | any | **inherit their design** — see [template-following.md](template-following.md); the visual system below does NOT apply |
 
 ## Quality plan before code
@@ -134,7 +135,7 @@ are a smell on results pages: give every content slide a visual anchor
 
 | Role | Font / weight | Size |
 |---|---|---|
-| 見出し | **Hiragino Kaku Gothic ProN + bold**(和文はウェイト明示が命 — デフォルトの細さが「見えにくい」の主犯) | 24–28 pt |
+| 見出し | **Hiragino Sans + bold**（PowerPoint for Mac はファミリー名 Hiragino Kaku Gothic ProN を解決できず MS ゴシックに化ける）(和文はウェイト明示が命 — デフォルトの細さが「見えにくい」の主犯) | 24–28 pt |
 | 本文 | 同 ProN(W3)、18 pt 未満禁止 | 18–20 pt |
 | 条件・脚注 | 同 ProN(W3)、投影で読む条件文は13–14 pt、純粋な出典だけ11–12 pt可 | 11–14 pt |
 | Latin & digits | Arial / Helvetica Neue(数字を和文フォントで組まない) | matches |
@@ -157,6 +158,13 @@ symbol at first appearance (below or beside the equation). Display size
 more.
 
 ## Academic profiles
+
+**Academic core discipline** (adapted from academic presentations best practices):
+- **Lead with the research question**: State the central puzzle or question early (by slide 2 or 3 at the latest). Do not bury it behind generic background.
+- **Narrative spine**: Use SCR (Situation / Complication / Resolution) or Funnel structure.
+- **One exhibit per slide**: Every content slide must have one dominant proof object that directly supports the action title.
+- **Text ceiling**: Target ~40 words per slide for live presentations. Bullets are orientation cues, not spoken script transcripts.
+- **Figure rebuild**: Re-plot paper figures for slide resolution (font ≥ 16 pt at final scale, 2–3× line widths).
 
 ### progress-meeting(進捗報告)
 
@@ -288,6 +296,30 @@ visual supports it, a so-what line closes it. If the slide's claim can't be
 said in one sentence, it's a dashboard, not a slide — restructure. KPIs
 ≤ 3–5, decimals only where precision changes the decision, status never by
 red/green alone (add arrows/symbols).
+
+## Poster profile(学会ポスター, A0)— compact
+
+Full rules, sizes and workflow: [poster.md](poster.md). A poster is a
+standalone-but-interactive page: it must win a passer-by in seconds and then
+support a conversation. It uses the visual system above **except**: no dark
+cover sandwich (one page; keep the page light), no kickers/slide-number furniture.
+
+- **Claim spine on one page**: claim-style title → one-sentence takeaway →
+  3–5 assertion-headed evidence blocks → conclusion. Reading only the heads
+  tells the story.
+- **Hierarchy by size**, in three clear tiers (title ≥ 80 pt, heads ≥ 48 pt,
+  body ≥ 28 pt, captions ≥ 24 pt, references ≥ 18 pt); a fourth tier is clutter.
+- **Figures dominate** (about 40–50% of the area), vector or ≥ 300 dpi at
+  placed size (≥ 150 hard floor); text ≤ ~500–800 words; ≥ ~25% whitespace.
+- **Grid**: 3 columns portrait, one left edge per column, margins ≥ 25 mm,
+  gutters wider than block padding. Quiet tinted fills or whitespace to group
+  blocks, not heavy outlines, no identical-card grids.
+- **Palette**: light page, dark ink, one deep accent for heads and one
+  highlight for the claim-carrying curve/number, ≤ 4 colours, mid-saturation
+  (prints duller than the screen); same meaning for a colour across the poster.
+- Static only: no animation or video; use a frame strip and a QR link.
+- Fonts: one Japanese family with explicit heavy weights for heads; check
+  that the PDF embeds fonts.
 
 ## Lecture profile(講義・チュートリアル)— compact
 

@@ -56,6 +56,9 @@ def main() -> None:
                     help="output directory for slide<N>.png files")
     ap.add_argument("--scale", type=float, default=1.7,
                     help="PDFium render scale (default 1.7 ≈ 1224px wide for 16:9)")
+    ap.add_argument("--max-side", type=int, default=3000,
+                    help="cap on the PNG's long side in px (default 3000; "
+                         "keeps A0 posters from rendering at 5000+ px)")
     args = ap.parse_args()
 
     if not args.deck.is_file():
@@ -85,7 +88,8 @@ def main() -> None:
                 if n > n_pages:
                     skipped.append(n)
                     continue
-                bitmap = pdf[n - 1].render(scale=args.scale)
+                scale = min(args.scale, args.max_side / max(pdf[n - 1].get_size()))
+                bitmap = pdf[n - 1].render(scale=scale)
                 out_png = args.out / f"slide{n}.png"
                 bitmap.to_pil().save(out_png)
                 written.append(out_png)

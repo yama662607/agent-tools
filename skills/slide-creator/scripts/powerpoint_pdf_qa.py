@@ -247,16 +247,19 @@ def white_rgb(image: Any) -> Any:
     return image.convert("RGB")
 
 
-def render_pdf_with_pdfium(pdf: Path, slides_dir: Path, dpi: int) -> list[Path]:
+def render_pdf_with_pdfium(pdf: Path, slides_dir: Path, dpi: int,
+                           max_side: int) -> list[Path]:
     import pypdfium2 as pdfium
 
     clear_old_slide_images(slides_dir)
     document = pdfium.PdfDocument(str(pdf))
     paths: list[Path] = []
-    scale = dpi / 72
     try:
         for index in range(len(document)):
             page = document[index]
+            # Cap the long side so A0-class pages (3370 pt) stay a sane
+            # raster; normal slides (<= ~14 in) are unaffected at 144 dpi.
+            scale = min(dpi / 72, max_side / max(page.get_size()))
             bitmap = page.render(scale=scale)
             image = white_rgb(bitmap.to_pil())
             path = slides_dir / f"slide-{index + 1:02d}.png"
@@ -318,6 +321,7 @@ def process_deck(
     dpi: int,
     keep_staging: bool,
     pdf_only: bool,
+    max_side: int,
 ) -> dict[str, Any]:
     pptx = pptx.expanduser().resolve()
     if not pptx.exists():
@@ -359,7 +363,7 @@ def process_deck(
         return item
 
     try:
-        slide_paths = render_pdf_with_pdfium(pdf, slides_dir, dpi)
+        slide_paths = render_pdf_with_pdfium(pdf, slides_dir, dpi, max_side)
         make_contact_sheet(slide_paths, contact_sheet)
     except Exception as exc:
         item["stage"] = "render"
@@ -386,6 +390,9 @@ def main() -> None:
     parser.add_argument("pptx", nargs="+", type=Path, help="One or more .pptx decks")
     parser.add_argument("--out", type=Path, default=Path("qa/powerpoint-pdf"))
     parser.add_argument("--dpi", type=int, default=144, help="PDFium rasterization DPI")
+    parser.add_argument("--max-side", type=int, default=3000,
+                        help="cap on the raster's long side in px (default 3000; matters for A0 posters, "
+                             "the exported PDF is always full size)")
     parser.add_argument("--staging-dir", type=Path, default=DEFAULT_STAGING)
     parser.add_argument("--timeout", type=int, default=180, help="PowerPoint export timeout per deck")
     parser.add_argument("--delay", type=float, default=2.0, help="Seconds to wait after PowerPoint opens the deck")
@@ -413,6 +420,7 @@ def main() -> None:
                 args.dpi,
                 args.keep_staging,
                 args.pdf_only,
+                args.max_side,
             )
             results.append(result)
             status = "ok" if result.get("ok") else "FAIL"

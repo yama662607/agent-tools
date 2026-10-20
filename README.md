@@ -11,6 +11,7 @@ skills/
   paper-download-kyoto-u/    Zotero 保存（v2: OA優先＋認証ブラウザ取得で paywall も対応）
   ncbi-pmc-skill/            PMC Open Access 確認（生物医学向け・任意）
   web-search-antigravity/    深掘りWeb検索（agy 必須・任意）
+  slide-creator/             PowerPoint(.pptx) の作成・編集・検証（学術発表・ポスター向け）
 mcp/
   arxiv-mcp / semantic-scholar / crossref-mcp / doi-mcp の定義
 docs/
