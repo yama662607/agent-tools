@@ -565,10 +565,12 @@ def main():
         description="Diff a hand-edited PPTX against a reference regenerated from the current source. Read-only; never writes a deck.")
     ap.add_argument("--reference", required=True, help="deck rebuilt from current source (temp path)")
     ap.add_argument("--edited", required=True, help="the human-edited, saved deck")
-    ap.add_argument("--threshold", "--threshold-inches", dest="threshold", type=float, default=0.03,
-                    help="ignore position/size changes below this many inches (default 0.03)")
-    ap.add_argument("--pos-tol", type=float, default=0.30,
-                    help="proximity window in inches for text-edit recovery (default 0.30)")
+    ap.add_argument("--threshold", "--threshold-inches", dest="threshold", type=float, default=None,
+                    help="ignore position/size changes below this many inches (default 0.03; 0.25 with --poster)")
+    ap.add_argument("--pos-tol", type=float, default=None,
+                    help="proximity window in inches for text-edit recovery (default 0.30; 2.0 with --poster)")
+    ap.add_argument("--poster", action="store_true",
+                    help="A0-scale page (~47 in): larger default --threshold/--pos-tol and a taller title band")
     ap.add_argument("--slide", default=None, help="restrict to these slide numbers, e.g. 2,10,13")
     ap.add_argument("--json", action="store_true", help="emit machine-readable JSON")
     ap.add_argument("--deep", action="store_true",
@@ -577,6 +579,13 @@ def main():
                     help="drop low-confidence rows (equation/decorative re-serialization, title autofit)")
     a = ap.parse_args()
 
+    global TITLE_BAND_IN, TITLE_MIN_W_IN
+    if a.poster:
+        TITLE_BAND_IN, TITLE_MIN_W_IN = 6.0, 12.0
+    if a.threshold is None:
+        a.threshold = 0.25 if a.poster else 0.03
+    if a.pos_tol is None:
+        a.pos_tol = 2.0 if a.poster else 0.30
     if a.threshold < 0 or a.pos_tol < 0:
         print("error: --threshold and --pos-tol must be non-negative", file=sys.stderr)
         sys.exit(2)

@@ -119,4 +119,4 @@ Key sources: Mayer *Multimedia Learning* (12 principles); Sweller CLT;
 Kosslyn *Clear and to the Point*; Tufte *Visual Display* / *Cognitive Style
 of PowerPoint*; Duarte *slide:ology*; Garner & Alley 2013 (Int'l J. Eng.
 Ed. 29(6)); WCAG 2.x SC 1.4.3/1.4.11. Full research notes with URLs:
-`~/Code/Projects/slide-creator-workspace/research/design/`.
+`~/Code/Skills/slide-creator-workspace/research/design/`.

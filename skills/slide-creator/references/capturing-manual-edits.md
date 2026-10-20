@@ -32,6 +32,8 @@ Two paths (see [roundtrip.md](roundtrip.md) for the split):
    uv run scripts/capture_edits.py --reference /tmp/reference.pptx \
        --edited "path/to/edited.pptx" --hide-low-confidence
    ```
+   For an A0 poster add `--poster` (threshold 0.25 in, proximity 2.0 in; see
+   [poster.md](poster.md) §10).
 5. Fold each reported delta into the build script's coordinate constants (and
    into the post-build video coords, which live in your rebuild command, not the
    .mjs).

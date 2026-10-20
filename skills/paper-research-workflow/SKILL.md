@@ -1,6 +1,6 @@
 ---
 name: paper-research-workflow
-description: Literature research workflow for finding, screening, verifying, and preparing academic papers before saving them. Use when the user asks to discover papers, compare candidate papers, validate DOI/publication metadata, check PDF availability, or connect discovery tools such as arxiv-mcp, semantic-scholar-mcp, crossref-mcp, doi-mcp, ncbi-pmc-skill, web-search-antigravity, and paper-download-kyoto-u.
+description: Literature research workflow for finding, screening, verifying, and preparing academic papers before saving them. Use when the user asks to discover papers, compare candidate papers, validate DOI/publication metadata, check PDF availability, or connect discovery tools such as arxiv-mcp, openalex-mcp, semantic-scholar, crossref-mcp, doi-mcp, ncbi-pmc-skill, web-search-antigravity, and paper-download-kyoto-u.
 ---
 
 # Paper Research Workflow
@@ -15,7 +15,11 @@ Do not modify third-party MCPs or skills. Use them as evidence sources. Put work
 
 Use `arxiv-mcp` for arXiv-first fields such as computer science, physics, mathematics, statistics, and preprints. Prefer it when the user wants arXiv IDs, abstracts, versions, or direct PDF links.
 
-Use `semantic-scholar-mcp` for paper discovery, citation context, related papers, author networks, and impact screening. Prefer it when ranking candidates or expanding from a seed paper.
+Use `openalex-mcp` for paper discovery, citation context, related papers, author networks, and impact screening. Prefer it when ranking candidates or expanding from a seed paper.
+
+Use the `semantic-scholar` skill for citation networks, impact screening by citation count, and author track records. It complements `openalex-mcp` rather than replacing it: prefer Semantic Scholar for citation counts and h-index, OpenAlex for open-access status and institutional data.
+
+`semantic-scholar-mcp` is not usable and is not installed: the published server writes a banner to stdout, which is the MCP transport itself, so no client completes the handshake. The `semantic-scholar` skill wraps the author's CLI instead. Verified 2026-08-11 against Antigravity.
 
 Use `crossref-mcp` for canonical publication metadata: DOI, title, author list, venue, publisher, year, and bibliographic normalization. Prefer it when title/DOI accuracy matters.
 
@@ -35,7 +39,7 @@ Identify topic, field, date range, paper type, and whether the user wants breadt
 
 2. Discover candidates
 
-Start with the most structured source. For arXiv-heavy fields use `arxiv-mcp`; for general academic discovery use `semantic-scholar-mcp`; for biomedical discovery include `ncbi-pmc-skill`; for broad or ambiguous topics use `web-search-antigravity`.
+Start with the most structured source. For arXiv-heavy fields use `arxiv-mcp`; for general academic discovery use `openalex-mcp`; for biomedical discovery include `ncbi-pmc-skill`; for broad or ambiguous topics use `web-search-antigravity`.
 
 3. Normalize metadata
 
@@ -60,7 +64,7 @@ For each selected paper, produce a compact candidate object with:
   "doi": "...",
   "url": "...",
   "pdf_url": "...",
-  "source": "arxiv|semantic-scholar|crossref|doi|pmc|web",
+  "source": "arxiv|openalex|crossref|doi|pmc|web",
   "metadata": {
     "authors": ["..."],
     "year": 2026,
